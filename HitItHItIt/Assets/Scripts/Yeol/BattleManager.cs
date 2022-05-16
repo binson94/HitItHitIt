@@ -20,7 +20,7 @@ namespace Yeol
     public class BattleManager : MonoBehaviour
     {
         ///<summary> 입력할 커맨드가 채워짐 </summary>
-        List<CommandToken> tokensQueue = new List<CommandToken>();
+        [SerializeField] List<CommandToken> tokensQueue = new List<CommandToken>();
         ///<summary> 현재 state 표시, Start -> Attack -> Dodge -> Attack ... </summary>
         UserState userState = UserState.Load;
         ///<summary> Attack, Dodge State Timer </summary>
@@ -248,6 +248,7 @@ namespace Yeol
                 else
                 {
                     userState = UserState.Load;
+                    StopCoroutine(timer);
                     StartDodgeState();
                 }
             }
