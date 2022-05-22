@@ -344,7 +344,7 @@ GameObject:
   - component: {fileID: 106777826}
   - component: {fileID: 106777825}
   m_Layer: 5
-  m_Name: Button
+  m_Name: Right Btn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -445,7 +445,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 8a1ddb84b71b2d048a4c1adcc8d026c9, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 42ef6e1c596621642911a4ab4699dbf9, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -658,7 +658,7 @@ GameObject:
   - component: {fileID: 329749963}
   - component: {fileID: 329749962}
   m_Layer: 5
-  m_Name: Button (3)
+  m_Name: Up Btn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -759,7 +759,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 3217cd4524761884fa98b544b3a858e3, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 3db032a6ea00fb94e94047cbc2339195, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -829,7 +829,7 @@ GameObject:
   - component: {fileID: 471932293}
   - component: {fileID: 471932292}
   m_Layer: 5
-  m_Name: Button
+  m_Name: Left Btn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -930,7 +930,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: a62fb84de567ada4487c01e07da44c63, type: 3}
+  m_Sprite: {fileID: 21300000, guid: f6c4024763ba0da4bbcd5f0b53bb454a, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1075,7 +1075,7 @@ GameObject:
   - component: {fileID: 646085875}
   - component: {fileID: 646085874}
   m_Layer: 5
-  m_Name: Button (3)
+  m_Name: Up Btn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1176,7 +1176,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 7dd562341381226478c3ace517bb7a00, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 1640977a8a0c3c347a5961428cb1f1d0, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1282,7 +1282,7 @@ GameObject:
   - component: {fileID: 688825087}
   - component: {fileID: 688825086}
   m_Layer: 5
-  m_Name: Button (1)
+  m_Name: Down Btn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1383,7 +1383,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 950fd9dca40e92b4caa9a3c84b9f0d2c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 3ec03bd1146f5e04fac468507421914f, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1609,7 +1609,7 @@ GameObject:
   - component: {fileID: 1023150967}
   - component: {fileID: 1023150966}
   m_Layer: 5
-  m_Name: Button (2)
+  m_Name: Right Btn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1710,7 +1710,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: fd09ac0aacb312d4bb6f49f52d11cbc4, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 66fa846bac958754a968e866529edad6, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1741,7 +1741,7 @@ GameObject:
   - component: {fileID: 1057114841}
   - component: {fileID: 1057114840}
   m_Layer: 5
-  m_Name: Button (1)
+  m_Name: Down Btn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1842,7 +1842,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 3cfcebaf8d10706429335456664bbc9f, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b6e4dc7aa1f8b67439d0a32db089a2cd, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2390,14 +2390,14 @@ MonoBehaviour:
   enemyHpTxt: {fileID: 1703605796}
   startBtn: {fileID: 100629954}
   tokenSprites:
-  - {fileID: 21300000, guid: 8a1ddb84b71b2d048a4c1adcc8d026c9, type: 3}
-  - {fileID: 21300000, guid: 3cfcebaf8d10706429335456664bbc9f, type: 3}
-  - {fileID: 21300000, guid: 06d01af4ddd330c40b58c0e707df74c7, type: 3}
-  - {fileID: 21300000, guid: 3217cd4524761884fa98b544b3a858e3, type: 3}
-  - {fileID: 21300000, guid: a62fb84de567ada4487c01e07da44c63, type: 3}
-  - {fileID: 21300000, guid: 950fd9dca40e92b4caa9a3c84b9f0d2c, type: 3}
-  - {fileID: 21300000, guid: fd09ac0aacb312d4bb6f49f52d11cbc4, type: 3}
-  - {fileID: 21300000, guid: 7dd562341381226478c3ace517bb7a00, type: 3}
+  - {fileID: 21300000, guid: 42ef6e1c596621642911a4ab4699dbf9, type: 3}
+  - {fileID: 21300000, guid: b6e4dc7aa1f8b67439d0a32db089a2cd, type: 3}
+  - {fileID: 21300000, guid: 4d2270a249b7f7842a9bdf1a7b8c5bca, type: 3}
+  - {fileID: 21300000, guid: 3db032a6ea00fb94e94047cbc2339195, type: 3}
+  - {fileID: 21300000, guid: f6c4024763ba0da4bbcd5f0b53bb454a, type: 3}
+  - {fileID: 21300000, guid: 3ec03bd1146f5e04fac468507421914f, type: 3}
+  - {fileID: 21300000, guid: 66fa846bac958754a968e866529edad6, type: 3}
+  - {fileID: 21300000, guid: 1640977a8a0c3c347a5961428cb1f1d0, type: 3}
   attackTokenImages:
   - {fileID: 574499529}
   - {fileID: 1991357035}
@@ -2439,7 +2439,7 @@ GameObject:
   - component: {fileID: 1703071429}
   - component: {fileID: 1703071428}
   m_Layer: 5
-  m_Name: Button (2)
+  m_Name: Left Btn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2540,7 +2540,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 06d01af4ddd330c40b58c0e707df74c7, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 4d2270a249b7f7842a9bdf1a7b8c5bca, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
