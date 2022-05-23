@@ -135,7 +135,7 @@ GameObject:
   - component: {fileID: 36708560}
   - component: {fileID: 36708559}
   m_Layer: 5
-  m_Name: Image (1)
+  m_Name: Dodge Token 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -582,7 +582,7 @@ GameObject:
   - component: {fileID: 254098074}
   - component: {fileID: 254098073}
   m_Layer: 5
-  m_Name: Image (3)
+  m_Name: Attack Token 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -999,7 +999,7 @@ GameObject:
   - component: {fileID: 574499530}
   - component: {fileID: 574499529}
   m_Layer: 5
-  m_Name: Image
+  m_Name: Attack Token 0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1206,7 +1206,7 @@ GameObject:
   - component: {fileID: 667996648}
   - component: {fileID: 667996647}
   m_Layer: 5
-  m_Name: Image (4)
+  m_Name: Attack Token 4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1533,7 +1533,7 @@ GameObject:
   - component: {fileID: 1021135217}
   - component: {fileID: 1021135216}
   m_Layer: 5
-  m_Name: Image (5)
+  m_Name: Dodge Token 5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1872,7 +1872,7 @@ GameObject:
   - component: {fileID: 1362083137}
   - component: {fileID: 1362083136}
   m_Layer: 5
-  m_Name: Image (2)
+  m_Name: Dodge Token 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2067,7 +2067,7 @@ GameObject:
   - component: {fileID: 1595227057}
   - component: {fileID: 1595227056}
   m_Layer: 5
-  m_Name: Image (5)
+  m_Name: Attack Token 5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2142,7 +2142,7 @@ GameObject:
   - component: {fileID: 1616302013}
   - component: {fileID: 1616302012}
   m_Layer: 5
-  m_Name: Image (3)
+  m_Name: Dodge Token 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2217,7 +2217,7 @@ GameObject:
   - component: {fileID: 1625714206}
   - component: {fileID: 1625714205}
   m_Layer: 5
-  m_Name: Image
+  m_Name: Dodge Token 0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2292,7 +2292,7 @@ GameObject:
   - component: {fileID: 1696276897}
   - component: {fileID: 1696276896}
   m_Layer: 5
-  m_Name: Image (4)
+  m_Name: Dodge Token 4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2384,10 +2384,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5419225c3834cd045ba7dfd8087b97e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tokensQueue: 
-  timerTxt: {fileID: 1535161767}
-  hpTxt: {fileID: 2087950297}
-  enemyHpTxt: {fileID: 1703605796}
+  userState: 0
+  uiTxts:
+  - {fileID: 1535161767}
+  - {fileID: 2087950297}
+  - {fileID: 1703605796}
   startBtn: {fileID: 100629954}
   tokenSprites:
   - {fileID: 21300000, guid: 42ef6e1c596621642911a4ab4699dbf9, type: 3}
@@ -2715,7 +2716,7 @@ GameObject:
   - component: {fileID: 1949024962}
   - component: {fileID: 1949024961}
   m_Layer: 5
-  m_Name: Image (2)
+  m_Name: Attack Token 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2873,7 +2874,7 @@ GameObject:
   - component: {fileID: 1991357036}
   - component: {fileID: 1991357035}
   m_Layer: 5
-  m_Name: Image (1)
+  m_Name: Attack Token 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
