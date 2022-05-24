@@ -86,7 +86,8 @@ public class SoundMgr : MonoBehaviour
     public void PlayBGM(int idx)
     {
         Debug.Log($"play BGM {idx}");
-        //bgmSource.PlayOneShot(bgmClips[idx]);
+        //bgmSource.clip = bgmClips[idx];
+        //bgmSource.Play();
     }
 
     ///<summary> SFX 크기 조절 함수 </summary>
