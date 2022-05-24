@@ -2337,6 +2337,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aefb2b97eabfc4749a7fb7cb53a63879, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  nowPowerLevel:
+  - {fileID: 1650074340}
+  - {fileID: 202258373}
+  - {fileID: 194606997}
+  - {fileID: 236528671}
+  moneyNeeded:
+  - {fileID: 1391535223}
+  - {fileID: 152122412}
+  - {fileID: 1171295873}
+  - {fileID: 659838721}
 --- !u!4 &2067679580
 Transform:
   m_ObjectHideFlags: 0
