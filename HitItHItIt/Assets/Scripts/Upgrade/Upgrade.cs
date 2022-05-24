@@ -13,17 +13,16 @@ public class Upgrade : MonoBehaviour
     private Text moneyHave;
     private Text nowPowerLevel;
     private Text moneyNeeded;
+    private Text moneyLack;
 
-    void Update()
+    private void Start()
     {
         moneyHave = GameObject.Find("MoneyText").GetComponent<Text>();
         moneyHave.text = "보유한 G:" + money.ToString();
+        moneyLack = GameObject.Find("MoneyLack").GetComponent<Text>();
+        moneyLack.text = "";   
 
-    
     }
-
-
-
 
     private int level_Up(int a)
     {
@@ -44,8 +43,7 @@ public class Upgrade : MonoBehaviour
         return c;
     }
 
-
-public void getUpgrade(int whatToUpgrade)
+private void getUpgrade(int whatToUpgrade)
     {
 
         int costNeeded = cost(100,powerLevel[whatToUpgrade]);
@@ -57,11 +55,16 @@ public void getUpgrade(int whatToUpgrade)
             nowPowerLevel.text = "현재 강화 수치: " + powerLevel[whatToUpgrade].ToString();
             moneyNeeded = GameObject.Find("MoneyNeed").GetComponent<Text>();
             moneyNeeded.text = "G: " + cost(100,powerLevel[whatToUpgrade]).ToString();
+            moneyHave.text = "보유한 G:" + money.ToString();
+            moneyLack.text = "";   
+        
         }
 
         else
         {
-            Debug.Log("돈이 부족합니다");
+
+            moneyLack.text = "보유한 G가 부족합니다!";
+
         }
 
 
