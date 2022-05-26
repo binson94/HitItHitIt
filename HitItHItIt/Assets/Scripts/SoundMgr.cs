@@ -27,10 +27,12 @@ public class SoundMgr : MonoBehaviour
 
                 //bgm gameObject 생성
                 GameObject tmp = CreateAudioSource("BGM", bgmSource, true);
+                bgmSource = tmp.GetComponent<AudioSource>();
                 tmp.transform.SetParent(container.transform);
 
                 //sfx gameObject 생성
                 tmp = CreateAudioSource("SFX", sfxSource, false);
+                sfxSource = tmp.GetComponent<AudioSource>();
                 tmp.transform.SetParent(container.transform);
 
                 LoadClips();
@@ -65,9 +67,9 @@ public class SoundMgr : MonoBehaviour
     //Resources.Load - https://learnandcreate.tistory.com/753 (Resources 내 경로 제공 시 파일 불러오기 가능)
     static void LoadClips()
     {
-        //bgmClips = new AudioClip[bgm 총 갯수];
-        //for(int i = 0;i < bgm 총 갯수;i++)
-            //bgmClips[i] = Resources.Load<AudioClip>("Sounds/"BGM 이름");
+        bgmClips = new AudioClip[1];
+        for(int i = 0;i < 1;i++)
+            bgmClips[i] = Resources.Load<AudioClip>($"Sounds/background{i}");
 
         //sfxClips = new AudipClip[sfx 총 갯수];
         //for(int i = 0;i < sfx 총 갯수;i++)
@@ -85,9 +87,9 @@ public class SoundMgr : MonoBehaviour
     ///<summary> BGM 재생 함수 </summary>
     public void PlayBGM(int idx)
     {
-        Debug.Log($"play BGM {idx}");
-        //bgmSource.clip = bgmClips[idx];
-        //bgmSource.Play();
+        Debug.Log(bgmClips[idx].name);
+        bgmSource.clip = bgmClips[idx];
+        bgmSource.Play();
     }
 
     ///<summary> SFX 크기 조절 함수 </summary>
@@ -102,6 +104,6 @@ public class SoundMgr : MonoBehaviour
     public void PlaySFX(int idx)
     {
         Debug.Log($"play SFX {idx}");
-        //sfxSource.PlayOneShot(sfxClips[idx]);
+        sfxSource.PlayOneShot(sfxClips[idx]);
     }
 }
