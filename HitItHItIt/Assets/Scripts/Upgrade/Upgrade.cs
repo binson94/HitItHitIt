@@ -55,7 +55,7 @@ public class Upgrade : MonoBehaviour
         return c;
     }
 
-private void getUpgrade(int whatToUpgrade)
+public void getUpgrade(int whatToUpgrade)
     {
 
         int costNeeded = cost(100,powerLevel[whatToUpgrade]);
