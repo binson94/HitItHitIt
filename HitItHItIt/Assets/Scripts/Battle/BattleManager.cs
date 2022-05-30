@@ -27,10 +27,9 @@ namespace Yeol
         Coroutine timer = null;
 
         #region Show UI
-        ///<summary> 0 timer, 1 hp, 2 enemyhp </summary>
-        [Tooltip("0 timer, 1 hp, 2enemyhp")]
-        [SerializeField] Text[] uiTxts;
-        [SerializeField] GameObject startBtn;
+        [SerializeField] Text startTxt;
+        ///<summary> state 남은 시간 표시 텍스트 </summary>
+        [SerializeField] Text timerTxt;
         ///<summary> 0 ~ 3 Left, 4 ~ 7 Right, Jap, Hook, Upper, Ducking 순 </summary>
         [Tooltip("0 ~ 3 Left, 4 ~ 7 Right, Jap, Hook, Upper, Ducking 순")]
         [SerializeField] Sprite[] tokenSprites;
@@ -38,6 +37,13 @@ namespace Yeol
         [SerializeField] Image[] attackTokenImages;
         ///<summary> tokenQueue의 이미지가 할당될 실제 이미지 오브젝트(Dodge State) </summary>
         [SerializeField] Image[] dodgeTokenImages;
+
+        ///<summary> 플레이어 체력 이미지 3개, 2 -> 1 -> 0 순으로 사라짐 </summary>
+        [SerializeField] GameObject[] playerhpImages;
+        ///<summary> 적 체력 보여주는 슬라이더 </summary>
+        [SerializeField] SliderImage enemyhpSlider;
+        ///<summary> 스테미나 보여주는 슬라이더 </summary>
+        [SerializeField] SliderImage staminaSlider;
         #endregion
 
         #region CharacterStatus
@@ -46,23 +52,24 @@ namespace Yeol
         ///<summary> 0 ~ 2 Left, 4 ~ 6 Right, Jap, Hook, Upper 순 각 피해, 3번은 결번 </summary>
         int[] dmgs = new int[7] { 1, 1, 1, 0, 1, 1, 1 };
         ///<summary> 플레이어 체력 </summary>
-        int hp = 10;
+        int hp = 3;
 
-        ///<summary> 적 공격력, 회피 실패 시 피해 입음 </summary>
-        int enemyAtk = 5;
         ///<summary> 적 체력 </summary>
         int enemyHp = 50;
         ///<summary> attack State 지속 시간, 만료 시 dodge State로 넘어감 </summary>
-        int attackStateTime = 6;
+        int attackStateTime = 10;
         ///<summary> dodge State 지속 시간, 만료 시 피해 입음 </summary>
-        int dodgeStateTime = 6;
+        int dodgeStateTime = 10;
         ///<summary> dodge State에서 제시되는 커맨드 수 </summary>
         int dodgeCommandCount = 10;
         #endregion CharacterStatus
         ///<summary> Attack State에서 올바른 커맨드 입력 시 데미지 누적 </summary>
         int accumulateDamage;
         ///<summary> 남은 스테미나, Attack State 시작 시 초기화 </summary>
-        int currStamina;
+        int currStamina = 10;
+
+        [SerializeField] GameObject pausePanel;
+        bool isPause = false;
 
         private void Start() {
             foreach(Image i in attackTokenImages)
@@ -70,35 +77,46 @@ namespace Yeol
             foreach (Image i in dodgeTokenImages)
                 i.gameObject.SetActive(false);
 
-            uiTxts[1].text = hp.ToString();
-            uiTxts[2].text= enemyHp.ToString();
+            enemyhpSlider.SetMax(enemyHp);
+            staminaSlider.SetMax(stamina);
+
+            StartCoroutine(WaitBeforeStart());
+        }
+
+        IEnumerator WaitBeforeStart()
+        {
+            int time = 3;
+
+            while (time > 0)
+            {
+                startTxt.text = $"{time}초 후 시작";
+                yield return new WaitForSeconds(1f);
+                time--;
+            }
+
+
+            startTxt.gameObject.SetActive(false);
+            StartAttackState();
         }
        
        ///<summary> 디버그 용, 키보드 입력과 버튼 대응 </summary>
         private void Update() {
-            if(Input.GetKeyDown(KeyCode.D))
+            if(Input.GetKeyDown(KeyCode.S))
                 OnBtnClick(0);
-            else if(Input.GetKeyDown(KeyCode.S))
+            else if(Input.GetKeyDown(KeyCode.D))
                 OnBtnClick(1);
-            else if(Input.GetKeyDown(KeyCode.A))
-                OnBtnClick(2);
             else if(Input.GetKeyDown(KeyCode.W))
+                OnBtnClick(2);
+            else if(Input.GetKeyDown(KeyCode.A))
                 OnBtnClick(3);
-            else if(Input.GetKeyDown(KeyCode.LeftArrow))
-                OnBtnClick(4);
             else if(Input.GetKeyDown(KeyCode.DownArrow))
+                OnBtnClick(4);
+            else if(Input.GetKeyDown(KeyCode.LeftArrow))
                 OnBtnClick(5);
-            else if(Input.GetKeyDown(KeyCode.RightArrow))
-                OnBtnClick(6);
             else if(Input.GetKeyDown(KeyCode.UpArrow))
+                OnBtnClick(6);
+            else if(Input.GetKeyDown(KeyCode.RightArrow))
                 OnBtnClick(7);
-        }
-
-        ///<summary> 전투 시작 버튼 누를 때 호출 </summary>
-        public void OnStartBtnClick()
-        {
-            startBtn.SetActive(false);
-            StartAttackState();
         }
 
         #region AttackState
@@ -108,8 +126,11 @@ namespace Yeol
             foreach (Image i in dodgeTokenImages)
                 i.gameObject.SetActive(false);
 
+            
             accumulateDamage = 0;
             currStamina = stamina;
+            staminaSlider.SetValue(stamina);
+            staminaSlider.gameObject.SetActive(true);
 
             FillAttackQueue();
             userState = UserState.Attack;
@@ -123,7 +144,7 @@ namespace Yeol
         {
             while (timer > 0)
             {
-                uiTxts[0].text = timer.ToString();
+                timerTxt.text = timer.ToString();
                 yield return new WaitForSeconds(1);
                 timer--;
             }
@@ -148,12 +169,12 @@ namespace Yeol
                 PlaySuccessAnim();
 
                 win = GiveDamage();
-                uiTxts[2].text = enemyHp.ToString();
+                enemyhpSlider.SetValue(enemyHp);
             }
             else
                 PlayFailAnim();
 
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(1f);
 
 
 
@@ -183,13 +204,15 @@ namespace Yeol
                 i.gameObject.SetActive(true);
             ImageUpdate();
 
+            staminaSlider.gameObject.SetActive(false);
+
             timer = StartCoroutine(DodgeTimer(dodgeStateTime));
         }
         IEnumerator DodgeTimer(int timer)
         {
             while (timer > 0)
             {
-                uiTxts[0].text = timer.ToString();
+                timerTxt.text = timer.ToString();
                 timer--;
                 yield return new WaitForSeconds(1);
             }
@@ -215,11 +238,13 @@ namespace Yeol
             else
             {
                 PlayFailAnim();
-                lose = GetDamage();
-                uiTxts[1].text = hp.ToString();
+
+                playerhpImages[--hp].SetActive(false);
+
+                lose = hp <= 0;
             }
 
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(1f);
 
             if (lose)
             {
@@ -229,7 +254,6 @@ namespace Yeol
             else
                 StartAttackState();
 
-            bool GetDamage() => (hp -= enemyAtk) <= 0;
             void PlaySuccessAnim() { Debug.Log("회피 성공 애니메이션");}
             void PlayFailAnim() { Debug.Log("회피 실패 애니메이션");}
         }       
@@ -239,6 +263,8 @@ namespace Yeol
         ///<param name="btnIdx"> 0 ~ 3 Left, 4 ~ 7 Right : 잽, 훅, 어퍼, 더킹 순서, 버튼에 이미 할당되어 있음 </param>
         public void OnBtnClick(int btnIdx)
         {
+            if(isPause) return;
+
             if (userState == UserState.Attack)
                 OnBtnAttackState((CommandToken)btnIdx);
             else if (userState == UserState.Dodge)
@@ -256,8 +282,10 @@ namespace Yeol
                     tokensQueue.Add(GetAttackToken());
                     ImageUpdate();
 
+                    staminaSlider.SetValue(--currStamina);
+
                     //스테미나 모두 소진 시, 타이머 만료와 같은 동작
-                    if(--currStamina <= 0)
+                    if(currStamina <= 0)
                     {
                         userState = UserState.AttackAnim;
                         StopCoroutine(timer);
@@ -299,6 +327,19 @@ namespace Yeol
                 }
             }
         }
+
+        ///<summary> 일시 정지, 재시작 버튼 </summary>
+        public void OnBtnPause()
+        {
+            if(userState == UserState.Load || userState == UserState.Win || userState == UserState.Lose) return;
+
+            isPause = !isPause;
+            pausePanel.SetActive(isPause);
+            Time.timeScale = isPause ? 0 : 1;
+        }
+
+        ///<summary> 타이틀로 돌아가기 버튼 </summary>
+        public void OnBtnBackToTitle() => UnityEngine.SceneManagement.SceneManager.LoadScene(0);
 
         ///<summary> State에 따라 맞는 Image Token 업데이트 </summary>
         void ImageUpdate()
