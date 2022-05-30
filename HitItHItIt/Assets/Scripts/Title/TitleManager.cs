@@ -15,7 +15,6 @@ namespace Yeol
         private void Start()
         {
             LoadSoundOption();
-            GameManager.instance.LoadData();
             SoundMgr.instance.PlayBGM(0);
         }
 
