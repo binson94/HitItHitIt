@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 
+public enum BGMList
+{
+    Title, Win, Lose
+}
+
 public class SoundMgr : MonoBehaviour
 {
     static SoundMgr _instance = null;
@@ -67,9 +72,9 @@ public class SoundMgr : MonoBehaviour
     //Resources.Load - https://learnandcreate.tistory.com/753 (Resources 내 경로 제공 시 파일 불러오기 가능)
     static void LoadClips()
     {
-        bgmClips = new AudioClip[1];
-        for(int i = 0;i < 1;i++)
-            bgmClips[i] = Resources.Load<AudioClip>($"Sounds/background{i}");
+        bgmClips = new AudioClip[3];
+        for(int i = 0;i < 3;i++)
+            bgmClips[i] = Resources.Load<AudioClip>($"Sounds/BGM{i}");
 
         //sfxClips = new AudipClip[sfx 총 갯수];
         //for(int i = 0;i < sfx 총 갯수;i++)
@@ -85,11 +90,16 @@ public class SoundMgr : MonoBehaviour
     }
 
     ///<summary> BGM 재생 함수 </summary>
-    public void PlayBGM(int idx)
+    public void PlayBGM(BGMList idx)
     {
-        Debug.Log(bgmClips[idx].name);
-        bgmSource.clip = bgmClips[idx];
+        bgmSource.clip = bgmClips[(int)idx];
         bgmSource.Play();
+    }
+
+    ///<summary> BGM 정지 함수 </summary>
+    public void StopBGM()
+    {
+        bgmSource.Stop();
     }
 
     ///<summary> SFX 크기 조절 함수 </summary>

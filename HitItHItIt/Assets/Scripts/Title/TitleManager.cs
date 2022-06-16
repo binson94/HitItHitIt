@@ -15,7 +15,7 @@ namespace Yeol
         private void Start()
         {
             LoadSoundOption();
-            SoundMgr.instance.PlayBGM(0);
+            SoundMgr.instance.PlayBGM(BGMList.Title);
         }
 
         //게임 최초 실행 시, PlayerPrefs로 저장된 사운드 옵션 불러옴

@@ -8,7 +8,7 @@ namespace Yeol
     ///<summary> FSM, 사진 참조 </summary>
     public enum UserState
     {
-        Load, Attack, AttackAnim, Dodge, DodgeAnim, Win, Lose
+        Load, Attack, AttackEnd, Dodge, DodgeEnd, Win, Lose
     }
 
     ///<summary> 각 버튼에 해당하는 나열형 </summary>
@@ -26,7 +26,7 @@ namespace Yeol
         ///<summary> Attack, Dodge State Timer </summary>
         Coroutine timer = null;
 
-        #region Show UI
+        #region ShowUI
         [SerializeField] Text startTxt;
         ///<summary> state 남은 시간 표시 텍스트 </summary>
         [SerializeField] Text timerTxt;
@@ -44,7 +44,10 @@ namespace Yeol
         [SerializeField] SliderImage enemyhpSlider;
         ///<summary> 스테미나 보여주는 슬라이더 </summary>
         [SerializeField] SliderImage staminaSlider;
-        #endregion
+
+        bool isPause = false;
+        [SerializeField] GameObject pausePanel;
+        #endregion ShowUI
 
         #region CharacterStatus
         ///<summary> 한 Attack State에서 입력할 수 있는 최대 커맨드 수 </summary>
@@ -55,21 +58,22 @@ namespace Yeol
         int hp = 3;
 
         ///<summary> 적 체력 </summary>
-        int enemyHp = 50;
+        int enemyHp = 20;
         ///<summary> attack State 지속 시간, 만료 시 dodge State로 넘어감 </summary>
         int attackStateTime = 10;
         ///<summary> dodge State 지속 시간, 만료 시 피해 입음 </summary>
         int dodgeStateTime = 10;
         ///<summary> dodge State에서 제시되는 커맨드 수 </summary>
         int dodgeCommandCount = 10;
-        #endregion CharacterStatus
-        ///<summary> Attack State에서 올바른 커맨드 입력 시 데미지 누적 </summary>
-        int accumulateDamage;
+
         ///<summary> 남은 스테미나, Attack State 시작 시 초기화 </summary>
         int currStamina = 10;
+        #endregion CharacterStatus
 
-        [SerializeField] GameObject pausePanel;
-        bool isPause = false;
+        #region Animation
+        [SerializeField] Animator playerAnimator;
+        [SerializeField] Animator enemyAnimator;
+        #endregion
 
         private void Start() {
             foreach(Image i in attackTokenImages)
@@ -80,6 +84,7 @@ namespace Yeol
             enemyhpSlider.SetMax(enemyHp);
             staminaSlider.SetMax(stamina);
 
+            SoundMgr.instance.StopBGM();
             StartCoroutine(WaitBeforeStart());
         }
 
@@ -126,8 +131,6 @@ namespace Yeol
             foreach (Image i in dodgeTokenImages)
                 i.gameObject.SetActive(false);
 
-            
-            accumulateDamage = 0;
             currStamina = stamina;
             staminaSlider.SetValue(stamina);
             staminaSlider.gameObject.SetActive(true);
@@ -149,46 +152,18 @@ namespace Yeol
                 timer--;
             }
 
-            AttackTimerExpired();
-            yield return null;
-        }
-        ///<summary> 공격 타이머 만료 또는 스테미나 모두 소진 시 호출(공격을 성공한 경우), true로 공격 애니메이션 재생 </summary>
-        void AttackTimerExpired()
-        {
-            userState = UserState.AttackAnim;
+            userState = UserState.AttackEnd;
+            StartCoroutine(AttackToDodgeDelay());
 
-            StartCoroutine(PlayAttackAnimation(true));
+            yield return null;
         }
         
         ///<summary> 공격 애니메이션 재생 코루틴, 성공 여부는 매개변수로 받음 </summary>
-        IEnumerator PlayAttackAnimation(bool isSuccess)
+        IEnumerator AttackToDodgeDelay()
         {
-            bool win = false;
-            if (isSuccess && accumulateDamage > 0)
-            {
-                PlaySuccessAnim();
-
-                win = GiveDamage();
-                enemyhpSlider.SetValue(enemyHp);
-            }
-            else
-                PlayFailAnim();
-
             yield return new WaitForSeconds(1f);
 
-
-
-            if (win)
-            {
-                userState = UserState.Win;
-                Win();
-            }
-            else
-                StartDodgeState();
-
-            bool GiveDamage() => (enemyHp -= accumulateDamage) <= 0;
-            void PlaySuccessAnim() { Debug.Log("공격 성공 애니메이션"); }
-            void PlayFailAnim() { Debug.Log("공격 실패 애니메이션"); }
+            StartDodgeState();
         }
         #endregion AttackState
         #region DodgeState
@@ -223,24 +198,19 @@ namespace Yeol
         ///<summary> 회피 타이머 만료 또는 잘못된 커맨드 입력 시 호출(회피를 실패한 경우), 피해 입고 lose 판정, 생존 시 Attack State로 전환 </summary>
         void DodgeTimerExpired()
         {
-            userState = UserState.DodgeAnim;
+            userState = UserState.DodgeEnd;
 
-            StartCoroutine(PlayDodgeAnimation(false));
+            StartCoroutine(DodgeToAttackDelay(false));
         }
 
         ///<summary> 회피 애니메이션 재생 코루틴, 성공 여부는 매개변수로 받음 </summary>
-        IEnumerator PlayDodgeAnimation(bool isSuccess)
+        IEnumerator DodgeToAttackDelay(bool isSuccess)
         {
             bool lose = false;
 
-            if (isSuccess)
-                PlaySuccessAnim();
-            else
+            if (!isSuccess)
             {
-                PlayFailAnim();
-
                 playerhpImages[--hp].SetActive(false);
-
                 lose = hp <= 0;
             }
 
@@ -253,9 +223,6 @@ namespace Yeol
             }
             else
                 StartAttackState();
-
-            void PlaySuccessAnim() { Debug.Log("회피 성공 애니메이션");}
-            void PlayFailAnim() { Debug.Log("회피 실패 애니메이션");}
         }       
         #endregion DodgeState
 
@@ -276,33 +243,54 @@ namespace Yeol
                 //입력 성공
                 if (inputToken == tokensQueue[0])
                 {
+                    if(inputToken < CommandToken.LDucking)
+                        playerAnimator.Play("Hand LeftAtk");
+                    else
+                        playerAnimator.Play("Hand RightAtk");
+
                     //피해 누적 및 제일 앞 Token 제거
-                    accumulateDamage += dmgs[(int)inputToken];
+                    enemyHp -= dmgs[(int)inputToken];
+                    if(enemyHp < 0)
+                        enemyHp = 0;
+                    enemyhpSlider.SetValue(enemyHp);
+                    
                     tokensQueue.RemoveAt(0);
                     tokensQueue.Add(GetAttackToken());
                     ImageUpdate();
 
                     staminaSlider.SetValue(--currStamina);
 
-                    //스테미나 모두 소진 시, 타이머 만료와 같은 동작
-                    if(currStamina <= 0)
+                    if(enemyHp <= 0)
                     {
-                        userState = UserState.AttackAnim;
+                        userState = UserState.Win;
                         StopCoroutine(timer);
-                        AttackTimerExpired();
+                        Win();
                     }
+                    //스테미나 모두 소진 시, 타이머 만료와 같은 동작
+                    else if(currStamina <= 0)
+                    {
+                        userState = UserState.AttackEnd;
+                        StopCoroutine(timer);
+                        StartCoroutine(AttackToDodgeDelay());
+                    }
+
                 }
                 //입력 실패 -> 누적 피해 사라짐, 공격 애니메이션 재생
                 else
                 {
-                    userState = UserState.AttackAnim;
+                    userState = UserState.AttackEnd;
                     StopCoroutine(timer);
-                    StartCoroutine(PlayAttackAnimation(false));
+                    StartCoroutine(AttackToDodgeDelay());
                 }
             }
             ///<summary> Dodge State에서 버튼 입력 처리 </summary>
             void OnBtnDodgeState(CommandToken inputToken)
             {
+                if(tokensQueue[0] == CommandToken.LDucking)
+                    enemyAnimator.Play("Enemy LeftAtk");
+                else
+                    enemyAnimator.Play("Enemy RightAtk");
+
                 //입력 성공
                 if (inputToken == tokensQueue[0])
                 {
@@ -313,15 +301,15 @@ namespace Yeol
                     //모든 토큰 입력 완료 -> 회피 성공 애니메이션 재생, Attack State로 전환
                     if(tokensQueue.Count <= 0)
                     {
-                        userState = UserState.DodgeAnim;
+                        userState = UserState.DodgeEnd;
                         StopCoroutine(timer);
-                        StartCoroutine(PlayDodgeAnimation(true));
+                        StartCoroutine(DodgeToAttackDelay(true));
                     }
                 }
                 //입력 실패 -> 타이머 만료와 같은 동작
                 else
                 {
-                    userState = UserState.DodgeAnim;
+                    userState = UserState.DodgeEnd;
                     StopCoroutine(timer);
                     DodgeTimerExpired();
                 }
@@ -363,10 +351,12 @@ namespace Yeol
         void Win()
         {
             Debug.Log("win");
+            SoundMgr.instance.PlayBGM(BGMList.Win);
         }
         void Lose()
         {
             Debug.Log("lose");
+            SoundMgr.instance.PlayBGM(BGMList.Lose);
         }
 
         #region TokenQueue Actions
