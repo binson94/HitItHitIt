@@ -92,8 +92,12 @@ public class SoundMgr : MonoBehaviour
     ///<summary> BGM 재생 함수 </summary>
     public void PlayBGM(BGMList idx)
     {
-        bgmSource.clip = bgmClips[(int)idx];
-        bgmSource.Play();
+        //이미 같은 BGM 재생 시엔 다시 재생하지 않음
+        if (bgmSource.clip != bgmClips[(int)idx])
+        {
+            bgmSource.clip = bgmClips[(int)idx];
+            bgmSource.Play();
+        }
     }
 
     ///<summary> BGM 정지 함수 </summary>

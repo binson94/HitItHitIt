@@ -187,7 +187,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &111304740
 GameObject:
@@ -202,7 +202,7 @@ GameObject:
   - component: {fileID: 111304743}
   - component: {fileID: 111304742}
   m_Layer: 5
-  m_Name: Upper
+  m_Name: Jap Btn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -275,8 +275,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 2067679579}
-        m_TargetAssemblyTypeName: Upgrade, Assembly-CSharp
-        m_MethodName: getUpgrade
+        m_TargetAssemblyTypeName: UpgradeManager, Assembly-CSharp
+        m_MethodName: GetUpgrade
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -783,13 +783,13 @@ MonoBehaviour:
     m_BestFit: 0
     m_MinSize: 0
     m_MaxSize: 300
-    m_Alignment: 0
+    m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Jap
+  m_Text: Hook
 --- !u!222 &347587700
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -890,12 +890,12 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 598965750}
-  - {fileID: 1132995121}
   - {fileID: 1720876540}
-  - {fileID: 1170007924}
   - {fileID: 1503186555}
+  - {fileID: 1170007924}
+  - {fileID: 1132995121}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -912,7 +912,7 @@ GameObject:
   m_Component:
   - component: {fileID: 598965750}
   m_Layer: 5
-  m_Name: Bottons
+  m_Name: Upgrade Btns
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1005,13 +1005,13 @@ MonoBehaviour:
     m_BestFit: 0
     m_MinSize: 0
     m_MaxSize: 50
-    m_Alignment: 0
+    m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Upper
+  m_Text: Jap
 --- !u!222 &654948864
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1112,7 +1112,7 @@ GameObject:
   - component: {fileID: 1045138900}
   - component: {fileID: 1045138899}
   m_Layer: 5
-  m_Name: Hook
+  m_Name: Upper Btn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1185,8 +1185,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 2067679579}
-        m_TargetAssemblyTypeName: Upgrade, Assembly-CSharp
-        m_MethodName: getUpgrade
+        m_TargetAssemblyTypeName: UpgradeManager, Assembly-CSharp
+        m_MethodName: GetUpgrade
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1247,7 +1247,7 @@ GameObject:
   - component: {fileID: 1055890656}
   - component: {fileID: 1055890655}
   m_Layer: 5
-  m_Name: Stamina
+  m_Name: Stamina Btn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1320,8 +1320,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 2067679579}
-        m_TargetAssemblyTypeName: Upgrade, Assembly-CSharp
-        m_MethodName: getUpgrade
+        m_TargetAssemblyTypeName: UpgradeManager, Assembly-CSharp
+        m_MethodName: GetUpgrade
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1382,7 +1382,7 @@ GameObject:
   - component: {fileID: 1132995123}
   - component: {fileID: 1132995122}
   m_Layer: 5
-  m_Name: Back
+  m_Name: Back Btn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1401,7 +1401,7 @@ RectTransform:
   m_Children:
   - {fileID: 1639677964}
   m_Father: {fileID: 567567509}
-  m_RootOrder: 1
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1452,10 +1452,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1152757483}
-        m_TargetAssemblyTypeName: Scene, Assembly-CSharp
-        m_MethodName: SceneLoad
-        m_Mode: 5
+      - m_Target: {fileID: 2067679579}
+        m_TargetAssemblyTypeName: UpgradeManager, Assembly-CSharp
+        m_MethodName: Btn_GoToTitle
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1502,49 +1502,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1132995120}
   m_CullTransparentMesh: 1
---- !u!1 &1152757481
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1152757482}
-  - component: {fileID: 1152757483}
-  m_Layer: 0
-  m_Name: SceneMge
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1152757482
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1152757481}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1152757483
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1152757481}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4316b73afe26af747b43a1de4633055c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1170007923
 GameObject:
   m_ObjectHideFlags: 0
@@ -1557,7 +1514,7 @@ GameObject:
   - component: {fileID: 1170007926}
   - component: {fileID: 1170007925}
   m_Layer: 5
-  m_Name: Image
+  m_Name: Character Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1790,7 +1747,7 @@ GameObject:
   - component: {fileID: 1503186557}
   - component: {fileID: 1503186556}
   m_Layer: 5
-  m_Name: MoneyLack
+  m_Name: MoneyLack Txt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1808,13 +1765,13 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 567567509}
-  m_RootOrder: 4
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 650, y: -100}
-  m_SizeDelta: {x: 160, y: 30}
-  m_Pivot: {x: 0, y: 1}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 400}
+  m_SizeDelta: {x: 650, y: 80}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1503186556
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1842,11 +1799,11 @@ MonoBehaviour:
     m_BestFit: 0
     m_MinSize: 0
     m_MaxSize: 70
-    m_Alignment: 0
+    m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
-    m_HorizontalOverflow: 1
-    m_VerticalOverflow: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: "\uBCF4\uC720\uD55C G\uAC00 \uBD80\uC871\uD569\uB2C8\uB2E4!"
 --- !u!222 &1503186557
@@ -2027,7 +1984,7 @@ GameObject:
   - component: {fileID: 1720876542}
   - component: {fileID: 1720876541}
   m_Layer: 5
-  m_Name: MoneyText
+  m_Name: HoldingMoney Txt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2045,13 +2002,13 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 567567509}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 800, y: 0}
-  m_SizeDelta: {x: 200, y: 200}
-  m_Pivot: {x: 0, y: 1}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 45, y: 490}
+  m_SizeDelta: {x: 500, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1720876541
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2079,7 +2036,7 @@ MonoBehaviour:
     m_BestFit: 0
     m_MinSize: 0
     m_MaxSize: 100
-    m_Alignment: 0
+    m_Alignment: 3
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 1
@@ -2107,7 +2064,7 @@ GameObject:
   - component: {fileID: 1738305622}
   - component: {fileID: 1738305621}
   m_Layer: 5
-  m_Name: Jap
+  m_Name: Hook Btn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2180,8 +2137,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 2067679579}
-        m_TargetAssemblyTypeName: Upgrade, Assembly-CSharp
-        m_MethodName: getUpgrade
+        m_TargetAssemblyTypeName: UpgradeManager, Assembly-CSharp
+        m_MethodName: GetUpgrade
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2293,13 +2250,13 @@ MonoBehaviour:
     m_BestFit: 0
     m_MinSize: 0
     m_MaxSize: 50
-    m_Alignment: 0
+    m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Hook
+  m_Text: Upper
 --- !u!222 &1784022211
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2319,7 +2276,7 @@ GameObject:
   - component: {fileID: 2067679580}
   - component: {fileID: 2067679579}
   m_Layer: 0
-  m_Name: UpgradeMge
+  m_Name: Upgrade Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2337,16 +2294,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aefb2b97eabfc4749a7fb7cb53a63879, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nowPowerLevel:
+  holdingMoneyTxt: {fileID: 1720876541}
+  nowPowerLevelTxts:
   - {fileID: 1650074340}
   - {fileID: 202258373}
   - {fileID: 194606997}
   - {fileID: 236528671}
-  moneyNeeded:
+  moneyNeededTxts:
   - {fileID: 1391535223}
   - {fileID: 152122412}
   - {fileID: 1171295873}
   - {fileID: 659838721}
+  moneyLackTxt: {fileID: 1503186556}
 --- !u!4 &2067679580
 Transform:
   m_ObjectHideFlags: 0
@@ -2359,7 +2318,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2118598918
 GameObject:

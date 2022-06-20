@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 namespace Yeol
 {
@@ -47,6 +48,13 @@ namespace Yeol
 
         bool isPause = false;
         [SerializeField] GameObject pausePanel;
+
+        ///<summary> 승리 시 표시할 UI Set </summary>
+        [SerializeField] GameObject winPanel;
+        ///<summary> 승리 시 획득한 돈을 표시하기 위한 텍스트 </summary>
+        [SerializeField] Text earnMoneyTxt;
+        ///<summary> 패배 시 표시할 UI Set </summary>
+        [SerializeField] GameObject losePanel;
         #endregion ShowUI
 
         #region CharacterStatus
@@ -350,14 +358,30 @@ namespace Yeol
 
         void Win()
         {
-            Debug.Log("win");
+            foreach(Image i in attackTokenImages)
+                i.gameObject.SetActive(false);
+            foreach (Image i in dodgeTokenImages)
+                i.gameObject.SetActive(false);
+                
+            winPanel.SetActive(true);
+            earnMoneyTxt.text = $"100 골드 획득";
+            GameManager.instance.EarnMoney(100);
+            
             SoundMgr.instance.PlayBGM(BGMList.Win);
         }
         void Lose()
         {
-            Debug.Log("lose");
+            foreach(Image i in attackTokenImages)
+                i.gameObject.SetActive(false);
+            foreach (Image i in dodgeTokenImages)
+                i.gameObject.SetActive(false);
+
+            losePanel.SetActive(true);
             SoundMgr.instance.PlayBGM(BGMList.Lose);
         }
+
+        public void Btn_GoToUpgrade() => SceneManager.LoadScene("2 Upgrade");
+        public void Btn_GoToTitle() => SceneManager.LoadScene("0 Title");
 
         #region TokenQueue Actions
         ///<summary> Attack State에서, 토큰 생성하여 채워넣기 </summary>

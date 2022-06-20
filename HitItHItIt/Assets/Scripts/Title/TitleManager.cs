@@ -22,12 +22,12 @@ namespace Yeol
         void LoadSoundOption()
         {
             float bgm = PlayerPrefs.GetFloat("BGM", 1);
-            float sfx = PlayerPrefs.GetFloat("BGM", 1);
-            SoundMgr.instance.SetBGM(bgm);
-            SoundMgr.instance.SetSFX(sfx);
-
+            float sfx = PlayerPrefs.GetFloat("SFX", 1);
             bgmSlider.value = bgm;
             sfxSlider.value = sfx;
+            
+            SoundMgr.instance.SetBGM(bgm);
+            SoundMgr.instance.SetSFX(sfx);
         }
 
         //bgm 슬라이더에 할당, 슬라이더의 값은 0.0001 ~ 1로 범위 제한
