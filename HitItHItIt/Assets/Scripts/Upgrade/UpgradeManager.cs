@@ -56,6 +56,11 @@ public class UpgradeManager : MonoBehaviour
             nowPowerLevelTxts[whatToUpgrade].text = "현재 강화 수치: " + GameManager.instance.gameData.powLvls[whatToUpgrade];
             moneyNeededTxts[whatToUpgrade].text = "G: " + GetCost(GameManager.instance.gameData.powLvls[whatToUpgrade]);
             moneyLackTxt.text = "";
+
+            if(whatToUpgrade <= 2)
+                SoundMgr.instance.PlaySFX(SFXList.Up_Punch);
+            else
+                SoundMgr.instance.PlaySFX(SFXList.Up_Stamina);
         }
         else
             StartCoroutine(ShowMoneyLackText());

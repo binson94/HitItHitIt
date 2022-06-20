@@ -23,11 +23,12 @@ namespace Yeol
         ///<summary> 입력할 커맨드가 채워짐 </summary>
         List<CommandToken> tokensQueue = new List<CommandToken>();
         ///<summary> 현재 state 표시, Start -> Attack -> Dodge -> Attack ... </summary>
-        [SerializeField] UserState userState = UserState.Load;
+        UserState userState = UserState.Load;
         ///<summary> Attack, Dodge State Timer </summary>
         Coroutine timer = null;
 
         #region ShowUI
+        [Header("UI")]
         [SerializeField] Text startTxt;
         ///<summary> state 남은 시간 표시 텍스트 </summary>
         [SerializeField] Text timerTxt;
@@ -79,6 +80,7 @@ namespace Yeol
         #endregion CharacterStatus
 
         #region Animation
+        [Header("Animation")]
         [SerializeField] Animator playerAnimator;
         [SerializeField] Animator enemyAnimator;
         #endregion
@@ -92,7 +94,11 @@ namespace Yeol
             enemyhpSlider.SetMax(enemyHp);
             staminaSlider.SetMax(stamina);
 
+            for(int i = 0;i < 3; i++)
+                dmgs[i] = dmgs[i + 4] = GameManager.instance.gameData.powLvls[i];
+
             SoundMgr.instance.StopBGM();
+            SoundMgr.instance.PlaySFX(SFXList.Bell);
             StartCoroutine(WaitBeforeStart());
         }
 
@@ -109,6 +115,8 @@ namespace Yeol
 
 
             startTxt.gameObject.SetActive(false);
+            SoundMgr.instance.PlaySFX(SFXList.Announce_Play);
+
             StartAttackState();
         }
        
@@ -218,6 +226,7 @@ namespace Yeol
 
             if (!isSuccess)
             {
+                SoundMgr.instance.PlaySFX(SFXList.Hit);
                 playerhpImages[--hp].SetActive(false);
                 lose = hp <= 0;
             }
@@ -261,6 +270,8 @@ namespace Yeol
                     if(enemyHp < 0)
                         enemyHp = 0;
                     enemyhpSlider.SetValue(enemyHp);
+
+                    SoundMgr.instance.PlaySFX(SFXList.Punch);
                     
                     tokensQueue.RemoveAt(0);
                     tokensQueue.Add(GetAttackToken());
@@ -324,19 +335,6 @@ namespace Yeol
             }
         }
 
-        ///<summary> 일시 정지, 재시작 버튼 </summary>
-        public void OnBtnPause()
-        {
-            if(userState == UserState.Load || userState == UserState.Win || userState == UserState.Lose) return;
-
-            isPause = !isPause;
-            pausePanel.SetActive(isPause);
-            Time.timeScale = isPause ? 0 : 1;
-        }
-
-        ///<summary> 타이틀로 돌아가기 버튼 </summary>
-        public void OnBtnBackToTitle() => UnityEngine.SceneManagement.SceneManager.LoadScene(0);
-
         ///<summary> State에 따라 맞는 Image Token 업데이트 </summary>
         void ImageUpdate()
         {
@@ -367,6 +365,7 @@ namespace Yeol
             earnMoneyTxt.text = $"100 골드 획득";
             GameManager.instance.EarnMoney(100);
             
+            SoundMgr.instance.PlaySFX(SFXList.Announce_Win);
             SoundMgr.instance.PlayBGM(BGMList.Win);
         }
         void Lose()
@@ -377,11 +376,21 @@ namespace Yeol
                 i.gameObject.SetActive(false);
 
             losePanel.SetActive(true);
+            SoundMgr.instance.PlaySFX(SFXList.Announce_Lose);
             SoundMgr.instance.PlayBGM(BGMList.Lose);
         }
 
-        public void Btn_GoToUpgrade() => SceneManager.LoadScene("2 Upgrade");
-        public void Btn_GoToTitle() => SceneManager.LoadScene("0 Title");
+        ///<summary> 일시 정지, 재시작 버튼 </summary>
+        public void OnBtnPause()
+        {
+            if(userState == UserState.Load || userState == UserState.Win || userState == UserState.Lose) return;
+
+            isPause = !isPause;
+            pausePanel.SetActive(isPause);
+            Time.timeScale = isPause ? 0 : 1;
+        }
+        public void Btn_GoToUpgrade() => SceneManager.LoadScene(2);
+        public void Btn_GoToTitle() => SceneManager.LoadScene(0);
 
         #region TokenQueue Actions
         ///<summary> Attack State에서, 토큰 생성하여 채워넣기 </summary>

@@ -8,6 +8,11 @@ public enum BGMList
     Title, Win, Lose
 }
 
+public enum SFXList
+{
+    Announce_Play, Announce_Win, Announce_Lose, Earn, Bell, Crowd, Hit, Punch, Up_Punch, Up_Stamina
+}
+
 public class SoundMgr : MonoBehaviour
 {
     static SoundMgr _instance = null;
@@ -74,11 +79,11 @@ public class SoundMgr : MonoBehaviour
     {
         bgmClips = new AudioClip[3];
         for(int i = 0;i < 3;i++)
-            bgmClips[i] = Resources.Load<AudioClip>($"Sounds/BGM{i}");
+            bgmClips[i] = Resources.Load<AudioClip>($"Sounds/BGM/BGM{i}");
 
-        //sfxClips = new AudipClip[sfx 총 갯수];
-        //for(int i = 0;i < sfx 총 갯수;i++)
-            //sfxClips[i] = Resources.Load<AudioClip>("Sounds/"SFX 이름");
+        sfxClips = new AudioClip[10];
+        for(int i = 0;i < 10;i++)
+            sfxClips[i] = Resources.Load<AudioClip>($"Sounds/SFX/SFX{i}");
     }
 
     ///<summary> BGM 크기 조절 함수 </summary>
@@ -115,9 +120,9 @@ public class SoundMgr : MonoBehaviour
     }
 
     ///<summary> SFX 재생 함수 </summary>
-    public void PlaySFX(int idx)
+    public void PlaySFX(SFXList idx)
     {
         Debug.Log($"play SFX {idx}");
-        sfxSource.PlayOneShot(sfxClips[idx]);
+        sfxSource.PlayOneShot(sfxClips[(int)idx]);
     }
 }

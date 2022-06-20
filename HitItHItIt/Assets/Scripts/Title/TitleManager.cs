@@ -34,6 +34,8 @@ namespace Yeol
         public void SetBGM() { SoundMgr.instance.SetBGM(bgmSlider.value); }
         //sfx 슬라이더에 할당, 슬라이더의 값은 0.0001 ~ 1로 범위 제한
         public void SetSFX() { SoundMgr.instance.SetSFX(sfxSlider.value); }
+        public void ResetData() {PlayerPrefs.DeleteAll();}
+
         public void SceneLoad(int sceneIndex) { SceneManager.LoadScene(sceneIndex); }
         public void ExitScene() { Application.Quit(); }
     }

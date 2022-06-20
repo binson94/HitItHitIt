@@ -12,6 +12,6 @@ public class SoundManager : MonoBehaviour
         musicsource.volume = volume;
     }
 
-    // Playerprefs·Î µ¥ÀÌÅÍ¸¦ ÀúÀå
-    // º¼·ı »çÀÌÁî¸¦ ÀúÀåÇÏ¿© ´Ù¸¥ ¾À¿¡µµ Àû¿ëµÇµµ·Ï ¼³Á¤
+    // Playerprefsë¡œ ë°ì´í„°ë¥¼ ì €ì¥
+    // ë³¼ë¥¨ ì‚¬ì´ì¦ˆë¥¼ ì €ì¥í•˜ì—¬ ë‹¤ë¥¸ ì”¬ì—ë„ ì ìš©ë˜ë„ë¡ ì„¤ì •
 }
