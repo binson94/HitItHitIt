@@ -31,33 +31,46 @@ public class UpgradeManager : MonoBehaviour
         moneyLackTxt.text = "";
         for (int i = 0; i < 4; i++)
         {
-            nowPowerLevelTxts[i].text = "현재 강화 수치: " + GameManager.instance.gameData.powLvls[i];
-            moneyNeededTxts[i].text = "G: " + GetCost(GameManager.instance.gameData.powLvls[i]);
+            int lvl = GameManager.instance.gameData.powLvls[i];
+            if (lvl >= 12)
+            {
+                nowPowerLevelTxts[i].text = "현재 강화 수치: MAX";
+                moneyNeededTxts[i].text = string.Empty;
+            }
+            else
+            {
+                nowPowerLevelTxts[i].text = "현재 강화 수치: " + GameManager.instance.gameData.powLvls[i];
+                moneyNeededTxts[i].text = "G: " + GameManager.instance.GetCost(i);
+            }
         }
 
         SoundMgr.instance.PlayBGM(BGMList.Title);
     }
 
-    ///<summary> 현재 레벨에 따른 업그레이드 비용 반환 </summary>
-    int GetCost(int lvl)
-    {
-        return 100 * lvl;
-    }
-
     ///<summary> 각 업그레이드 버튼에 할당, 업그레이드 시도 </summary>
     public void GetUpgrade(int whatToUpgrade)
     {
-        int costNeeded = GetCost(GameManager.instance.gameData.powLvls[whatToUpgrade]);
+        int costNeeded = GameManager.instance.GetCost(whatToUpgrade);
+        if(costNeeded <= 0) return;
 
         if (GameManager.instance.gameData.money >= costNeeded)
         {
             GameManager.instance.Upgrade(costNeeded, whatToUpgrade);
             holdingMoneyTxt.text = $"보유한 G:{GameManager.instance.gameData.money}";
-            nowPowerLevelTxts[whatToUpgrade].text = "현재 강화 수치: " + GameManager.instance.gameData.powLvls[whatToUpgrade];
-            moneyNeededTxts[whatToUpgrade].text = "G: " + GetCost(GameManager.instance.gameData.powLvls[whatToUpgrade]);
+            
+            if (GameManager.instance.gameData.powLvls[whatToUpgrade] >= 12)
+            {
+                nowPowerLevelTxts[whatToUpgrade].text = "현재 강화 수치: MAX";
+                moneyNeededTxts[whatToUpgrade].text = string.Empty;
+            }
+            else
+            {
+                nowPowerLevelTxts[whatToUpgrade].text = "현재 강화 수치: " + GameManager.instance.gameData.powLvls[whatToUpgrade];
+                moneyNeededTxts[whatToUpgrade].text = "G: " + GameManager.instance.GetCost(whatToUpgrade);
+            }
             moneyLackTxt.text = "";
 
-            if(whatToUpgrade <= 2)
+            if (whatToUpgrade <= 2)
                 SoundMgr.instance.PlaySFX(SFXList.Up_Punch);
             else
                 SoundMgr.instance.PlaySFX(SFXList.Up_Stamina);

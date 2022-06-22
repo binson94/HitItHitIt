@@ -42,7 +42,7 @@ namespace Yeol
         ///<summary> 남은 스테미나, Attack State 시작 시 초기화 </summary>
         int currStamina = 10;
 
-        int earnedMoney = 0;
+        int accumulatedDmg = 0;
 
         ///<summary> 0 ~ 2 Left, 4 ~ 6 Right, Jap, Hook, Upper 순 각 피해, 3번은 결번 </summary>
         int[] dmgs = new int[7] { 1, 1, 1, 0, 1, 1, 1 };
@@ -61,9 +61,10 @@ namespace Yeol
             foreach (Image i in attackTokenImages)
                 i.gameObject.SetActive(false);
 
-            for (int i = 0; i < 3; i++)
-                dmgs[i] = dmgs[i + 4] = GameManager.instance.gameData.powLvls[i];
-            stamina = GameManager.instance.gameData.powLvls[3] * 5 + 5;
+
+            for(int i = 0;i < 3; i++)
+                dmgs[i] = dmgs[i + 4] = GameManager.instance.GetStat(i);
+            stamina = GameManager.instance.GetStat(3);
 
             staminaSlider.SetMax(stamina);
 
@@ -119,13 +120,13 @@ namespace Yeol
 
             timer = StartCoroutine(AttackTimer(attackStateTime));
         }
-        IEnumerator AttackTimer(int timer)
+        IEnumerator AttackTimer(float timer)
         {
             while (timer > 0)
             {
-                timerTxt.text = timer.ToString();
-                yield return new WaitForSeconds(1);
-                timer--;
+                timerTxt.text = string.Format("{0:N1}", timer);
+                yield return new WaitForSeconds(0.1f);
+                timer -= 0.1f;
             }
 
             userState = UserState.Win;
@@ -153,8 +154,8 @@ namespace Yeol
                     playerAnimator.Play("Hand RightAtk");
 
                 //피해 정도에 따라 돈 획득
-                earnedMoney += 5 * dmgs[(int)inputToken];
-                currMoneyTxt.text = $"획득한 G:{earnedMoney}";
+                accumulatedDmg += dmgs[(int)inputToken];
+                currMoneyTxt.text = $"획득한 G:{accumulatedDmg / 10}";
 
                 tokensQueue.RemoveAt(0);
                 tokensQueue.Add(GetAttackToken());
@@ -195,8 +196,8 @@ namespace Yeol
             foreach (Image i in attackTokenImages)
                 i.gameObject.SetActive(false);
 
-            earnMoneyTxt.text = $"{earnedMoney} 골드 획득";
-            GameManager.instance.EarnMoney(earnedMoney);
+            earnMoneyTxt.text = $"{accumulatedDmg / 10} 골드 획득";
+            GameManager.instance.EarnMoney(accumulatedDmg / 10);
             endPanel.SetActive(true);
         }
 

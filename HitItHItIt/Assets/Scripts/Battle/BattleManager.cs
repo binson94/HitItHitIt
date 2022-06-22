@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using LitJson;
 
 namespace Yeol
 {
@@ -69,11 +70,11 @@ namespace Yeol
         ///<summary> 적 체력 </summary>
         int enemyHp = 20;
         ///<summary> attack State 지속 시간, 만료 시 dodge State로 넘어감 </summary>
-        int attackStateTime = 10;
+        float attackStateTime = 10;
         ///<summary> dodge State 지속 시간, 만료 시 피해 입음 </summary>
-        int dodgeStateTime = 10;
+        float dodgeStateTime = 10;
         ///<summary> dodge State에서 제시되는 커맨드 수 </summary>
-        int dodgeCommandCount = 10;
+        int dodgeCommandCount = 3;
 
         ///<summary> 남은 스테미나, Attack State 시작 시 초기화 </summary>
         int currStamina = 10;
@@ -91,15 +92,29 @@ namespace Yeol
             foreach (Image i in dodgeTokenImages)
                 i.gameObject.SetActive(false);
 
-            enemyhpSlider.SetMax(enemyHp);
-            staminaSlider.SetMax(stamina);
+            LoadData();
 
             for(int i = 0;i < 3; i++)
-                dmgs[i] = dmgs[i + 4] = GameManager.instance.gameData.powLvls[i];
+                dmgs[i] = dmgs[i + 4] = GameManager.instance.GetStat(i);
+            stamina = GameManager.instance.GetStat(3);
+
+            enemyhpSlider.SetMax(enemyHp);
+            staminaSlider.SetMax(stamina);
 
             SoundMgr.instance.StopBGM();
             SoundMgr.instance.PlaySFX(SFXList.Bell);
             StartCoroutine(WaitBeforeStart());
+        }
+
+        //<summary> 현재 스테이지 정보 불러오기 </summary>
+        //https://litjson.net/
+        void LoadData()
+        {
+            JsonData json = JsonMapper.ToObject(Resources.Load<TextAsset>("Stage").text);
+
+            enemyHp = (int)json[GameManager.instance.gameData.stage - 1]["hp"];
+            attackStateTime = float.Parse(json[GameManager.instance.gameData.stage -1]["attackTime"].ToString());
+            dodgeStateTime = float.Parse(json[GameManager.instance.gameData.stage -1]["dodgeTime"].ToString());
         }
 
         IEnumerator WaitBeforeStart()
@@ -159,13 +174,13 @@ namespace Yeol
 
             timer = StartCoroutine(AttackTimer(attackStateTime));
         }
-        IEnumerator AttackTimer(int timer)
+        IEnumerator AttackTimer(float timer)
         {
             while (timer > 0)
             {
-                timerTxt.text = timer.ToString();
-                yield return new WaitForSeconds(1);
-                timer--;
+                timerTxt.text = string.Format("{0:N1}", timer);
+                yield return new WaitForSeconds(0.1f);
+                timer -= 0.1f;
             }
 
             userState = UserState.AttackEnd;
@@ -177,6 +192,10 @@ namespace Yeol
         ///<summary> 공격 애니메이션 재생 코루틴, 성공 여부는 매개변수로 받음 </summary>
         IEnumerator AttackToDodgeDelay()
         {
+            foreach(Image image in attackTokenImages)
+                image.gameObject.SetActive(false);
+            timerTxt.text = string.Empty;
+
             yield return new WaitForSeconds(1f);
 
             StartDodgeState();
@@ -199,13 +218,13 @@ namespace Yeol
 
             timer = StartCoroutine(DodgeTimer(dodgeStateTime));
         }
-        IEnumerator DodgeTimer(int timer)
+        IEnumerator DodgeTimer(float timer)
         {
             while (timer > 0)
             {
-                timerTxt.text = timer.ToString();
-                timer--;
-                yield return new WaitForSeconds(1);
+                timerTxt.text = string.Format("{0:N1}", timer);
+                yield return new WaitForSeconds(0.1f);
+                timer -= 0.1f;
             }
 
             DodgeTimerExpired();
@@ -223,6 +242,7 @@ namespace Yeol
         IEnumerator DodgeToAttackDelay(bool isSuccess)
         {
             bool lose = false;
+            timerTxt.text = string.Empty;
 
             if (!isSuccess)
             {
@@ -364,6 +384,7 @@ namespace Yeol
             winPanel.SetActive(true);
             earnMoneyTxt.text = $"100 골드 획득";
             GameManager.instance.EarnMoney(100);
+            GameManager.instance.IncreaseStage();
             
             SoundMgr.instance.PlaySFX(SFXList.Announce_Win);
             SoundMgr.instance.PlayBGM(BGMList.Win);
