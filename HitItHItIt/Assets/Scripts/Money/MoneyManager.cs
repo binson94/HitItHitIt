@@ -72,6 +72,8 @@ namespace Yeol
             StartCoroutine(WaitBeforeStart());
         }
 
+
+
         IEnumerator WaitBeforeStart()
         {
             int time = 3;
@@ -87,7 +89,10 @@ namespace Yeol
             startTxt.gameObject.SetActive(false);
             StartAttack();
         }
+        
+        
 
+        
         ///<summary> 디버그 용, 키보드 입력과 버튼 대응 </summary>
         private void Update()
         {
@@ -180,6 +185,8 @@ namespace Yeol
                 End();
             }
         }
+       
+
 
         ///<summary> State에 따라 맞는 Image Token 업데이트 </summary>
         void ImageUpdate()
