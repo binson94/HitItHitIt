@@ -5,7 +5,7 @@ using UnityEngine.Audio;
 
 public enum BGMList
 {
-    Title, Win, Lose
+    Title, Money, Win, Lose
 }
 
 public enum SFXList
@@ -92,6 +92,8 @@ public class SoundMgr : MonoBehaviour
     {
         mixer.SetFloat("BGM", Mathf.Log10(value) * 20);
         PlayerPrefs.SetFloat("BGM", value);
+        mixer.SetFloat("SFX", Mathf.Log10(value) * 20);
+        PlayerPrefs.SetFloat("SFX", value);
     }
 
     ///<summary> BGM 재생 함수 </summary>
@@ -109,14 +111,6 @@ public class SoundMgr : MonoBehaviour
     public void StopBGM()
     {
         bgmSource.Stop();
-    }
-
-    ///<summary> SFX 크기 조절 함수 </summary>
-    ///<param name="value"> 0.0001 ~ 1 사이 값, 함수에서 -80 ~ 0으로 조절 </param>
-    public void SetSFX(float value)
-    {
-        mixer.SetFloat("SFX", Mathf.Log10(value) * 20);
-        PlayerPrefs.SetFloat("SFX", value);
     }
 
     ///<summary> SFX 재생 함수 </summary>

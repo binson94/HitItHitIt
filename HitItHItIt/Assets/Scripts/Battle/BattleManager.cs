@@ -48,6 +48,7 @@ namespace Yeol
         ///<summary> 스테미나 보여주는 슬라이더 </summary>
         [SerializeField] SliderImage staminaSlider;
 
+        [SerializeField] Slider bgmSlider;
         bool isPause = false;
         [SerializeField] GameObject pausePanel;
 
@@ -101,13 +102,14 @@ namespace Yeol
             enemyhpSlider.SetMax(enemyHp);
             staminaSlider.SetMax(stamina);
 
+            bgmSlider.value = PlayerPrefs.GetFloat("BGM", 1);
             SoundMgr.instance.StopBGM();
             SoundMgr.instance.PlaySFX(SFXList.Bell);
             StartCoroutine(WaitBeforeStart());
         }
 
         //<summary> 현재 스테이지 정보 불러오기 </summary>
-        //https://litjson.net/
+        // https://litjson.net/
         void LoadData()
         {
             JsonData json = JsonMapper.ToObject(Resources.Load<TextAsset>("Stage").text);
@@ -280,10 +282,7 @@ namespace Yeol
                 //입력 성공
                 if (inputToken == tokensQueue[0])
                 {
-                    if(inputToken < CommandToken.LDucking)
-                        playerAnimator.Play("Hand LeftAtk");
-                    else
-                        playerAnimator.Play("Hand RightAtk");
+                    PlayAnimation();
 
                     //피해 누적 및 제일 앞 Token 제거
                     enemyHp -= dmgs[(int)inputToken];
@@ -320,6 +319,31 @@ namespace Yeol
                     userState = UserState.AttackEnd;
                     StopCoroutine(timer);
                     StartCoroutine(AttackToDodgeDelay());
+                }
+
+                void PlayAnimation()
+                {
+                    switch(inputToken)
+                    {
+                        case CommandToken.LJap:
+                            playerAnimator.Play("player_LJ");
+                            break;
+                        case CommandToken.LHook:
+                            playerAnimator.Play("player_LH");
+                            break;
+                        case CommandToken.LUpper:
+                            playerAnimator.Play("player_LU");
+                            break;
+                        case CommandToken.RJap:
+                            playerAnimator.Play("player_RJ");
+                            break;
+                        case CommandToken.RHook:
+                            playerAnimator.Play("player_RH");
+                            break;
+                        case CommandToken.RUpper:
+                            playerAnimator.Play("player_RU");
+                            break;
+                    }
                 }
             }
             ///<summary> Dodge State에서 버튼 입력 처리 </summary>
@@ -404,14 +428,17 @@ namespace Yeol
         ///<summary> 일시 정지, 재시작 버튼 </summary>
         public void OnBtnPause()
         {
-            if(userState == UserState.Load || userState == UserState.Win || userState == UserState.Lose) return;
+            if (userState == UserState.Load || userState == UserState.Win || userState == UserState.Lose) return;
 
             isPause = !isPause;
             pausePanel.SetActive(isPause);
             Time.timeScale = isPause ? 0 : 1;
         }
-        public void Btn_GoToUpgrade() => SceneManager.LoadScene(2);
-        public void Btn_GoToTitle() => SceneManager.LoadScene(0);
+
+        //bgm 슬라이더에 할당, 슬라이더의 값은 0.0001 ~ 1로 범위 제한
+        public void SetBGM() { SoundMgr.instance.SetBGM(bgmSlider.value); }
+        public void Btn_Retry() {Time.timeScale = 1f; SceneManager.LoadScene(1);}
+        public void Btn_GoToTitle() {Time.timeScale = 1f; SceneManager.LoadScene(0);}
 
         #region TokenQueue Actions
         ///<summary> Attack State에서, 토큰 생성하여 채워넣기 </summary>

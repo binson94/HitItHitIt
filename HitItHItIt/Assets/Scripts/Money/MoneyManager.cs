@@ -68,7 +68,7 @@ namespace Yeol
 
             staminaSlider.SetMax(stamina);
 
-            SoundMgr.instance.PlayBGM(BGMList.Win);
+            SoundMgr.instance.PlayBGM(BGMList.Money);
             StartCoroutine(WaitBeforeStart());
         }
 
@@ -153,10 +153,7 @@ namespace Yeol
             //입력 성공
             if (inputToken == tokensQueue[0])
             {
-                if (inputToken < CommandToken.LDucking)
-                    playerAnimator.Play("Hand LeftAtk");
-                else
-                    playerAnimator.Play("Hand RightAtk");
+                PlayAnimation();
 
                 //피해 정도에 따라 돈 획득
                 accumulatedDmg += dmgs[(int)inputToken];
@@ -183,6 +180,31 @@ namespace Yeol
                 userState = UserState.Win;
                 StopCoroutine(timer);
                 End();
+            }
+
+            void PlayAnimation()
+            {
+                switch (inputToken)
+                {
+                    case CommandToken.LJap:
+                        playerAnimator.Play("player_LJ");
+                        break;
+                    case CommandToken.LHook:
+                        playerAnimator.Play("player_LH");
+                        break;
+                    case CommandToken.LUpper:
+                        playerAnimator.Play("player_LU");
+                        break;
+                    case CommandToken.RJap:
+                        playerAnimator.Play("player_RJ");
+                        break;
+                    case CommandToken.RHook:
+                        playerAnimator.Play("player_RH");
+                        break;
+                    case CommandToken.RUpper:
+                        playerAnimator.Play("player_RU");
+                        break;
+                }
             }
         }
        
