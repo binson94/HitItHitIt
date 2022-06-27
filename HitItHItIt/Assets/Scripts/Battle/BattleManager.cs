@@ -27,6 +27,7 @@ namespace Yeol
         UserState userState = UserState.Load;
         ///<summary> Attack, Dodge State Timer </summary>
         Coroutine timer = null;
+        float time = 0;
 
         #region ShowUI
         [Header("UI")]
@@ -179,11 +180,12 @@ namespace Yeol
         }
         IEnumerator AttackTimer(float timer)
         {
-            while (timer > 0)
+            time = timer;
+            while (time > 0)
             {
-                timerTxt.text = string.Format("{0:N1}", timer);
+                timerTxt.text = string.Format("{0:N1}", time);
                 yield return new WaitForSeconds(0.1f);
-                timer -= 0.1f;
+                time -= 0.1f;
             }
 
             userState = UserState.AttackEnd;
@@ -223,11 +225,12 @@ namespace Yeol
         }
         IEnumerator DodgeTimer(float timer)
         {
-            while (timer > 0)
+            time = timer;
+            while (time > 0)
             {
-                timerTxt.text = string.Format("{0:N1}", timer);
+                timerTxt.text = string.Format("{0:N1}", time);
                 yield return new WaitForSeconds(0.1f);
-                timer -= 0.1f;
+                time -= 0.1f;
             }
 
             DodgeTimerExpired();
@@ -296,6 +299,7 @@ namespace Yeol
                     tokensQueue.RemoveAt(0);
                     tokensQueue.Add(GetAttackToken());
                     ImageUpdate();
+                    time = attackStateTime;
 
                     staminaSlider.SetValue(--currStamina);
 
@@ -361,6 +365,7 @@ namespace Yeol
                     //제일 앞 토큰 제거
                     tokensQueue.RemoveAt(0);
                     ImageUpdate();
+                    time = dodgeStateTime;
 
                     //모든 토큰 입력 완료 -> 회피 성공 애니메이션 재생, Attack State로 전환
                     if(tokensQueue.Count <= 0)
