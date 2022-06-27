@@ -12,8 +12,8 @@ EditorBuildSettings:
     path: Assets/Scenes/1 Battle.unity
     guid: ea0cfa43ac69ff44083d389e016c7d34
   - enabled: 1
-    path: Assets/Scenes/2 Upgrade.unity
-    guid: 0ca92726cce412742b78e3dfc0a27ec9
+    path: Assets/Scenes/2 Upgrade 1.unity
+    guid: dc9ea3dbffaf5c445a4a6ee6bbaaa473
   - enabled: 1
     path: Assets/Scenes/3 Money.unity
     guid: 86910bfdb2ec96d42bae9f78b3e8787c

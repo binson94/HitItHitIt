@@ -77,8 +77,8 @@ public class SoundMgr : MonoBehaviour
     //Resources.Load - https://learnandcreate.tistory.com/753 (Resources 내 경로 제공 시 파일 불러오기 가능)
     static void LoadClips()
     {
-        bgmClips = new AudioClip[3];
-        for(int i = 0;i < 3;i++)
+        bgmClips = new AudioClip[4];
+        for(int i = 0;i < 4;i++)
             bgmClips[i] = Resources.Load<AudioClip>($"Sounds/BGM/BGM{i}");
 
         sfxClips = new AudioClip[10];

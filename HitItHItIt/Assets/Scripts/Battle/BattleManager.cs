@@ -117,6 +117,7 @@ namespace Yeol
             enemyHp = (int)json[GameManager.instance.gameData.stage - 1]["hp"];
             attackStateTime = float.Parse(json[GameManager.instance.gameData.stage -1]["attackTime"].ToString());
             dodgeStateTime = float.Parse(json[GameManager.instance.gameData.stage -1]["dodgeTime"].ToString());
+            dodgeCommandCount = (int)json[GameManager.instance.gameData.stage - 1]["dodgeCommand"];
         }
 
         IEnumerator WaitBeforeStart()
@@ -406,8 +407,8 @@ namespace Yeol
                 i.gameObject.SetActive(false);
                 
             winPanel.SetActive(true);
-            earnMoneyTxt.text = $"100 골드 획득";
-            GameManager.instance.EarnMoney(100);
+            earnMoneyTxt.text = $"{GameManager.instance.gameData.stage * 100} 골드 획득";
+            GameManager.instance.EarnMoney(GameManager.instance.gameData.stage * 100);
             GameManager.instance.IncreaseStage();
             
             SoundMgr.instance.PlaySFX(SFXList.Announce_Win);
