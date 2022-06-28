@@ -18,29 +18,33 @@ public class UpgradeManager : MonoBehaviour
     [SerializeField] Text moneyLackTxt;
     IEnumerator ShowMoneyLackText()
     {
-        moneyLackTxt.text = "보유한 G가 부족합니다!";
+        moneyLackTxt.text = "돈이 부족합니다!";
 
         yield return new WaitForSeconds(3f);
         moneyLackTxt.text = "";
     }
 
+
+
+
     private void Start()
     {
         //텍스트 초기값 설정
-        holdingMoneyTxt.text = $"보유한 G:{GameManager.instance.gameData.money}";
+        holdingMoneyTxt.text = $"{GameManager.instance.gameData.money}";
         moneyLackTxt.text = "";
+
         for (int i = 0; i < 4; i++)
         {
             int lvl = GameManager.instance.gameData.powLvls[i];
             if (lvl >= 12)
             {
-                nowPowerLevelTxts[i].text = "현재 강화 수치: MAX";
+                nowPowerLevelTxts[i].text = "MAX";
                 moneyNeededTxts[i].text = string.Empty;
             }
             else
             {
-                nowPowerLevelTxts[i].text = "현재 강화 수치: " + GameManager.instance.gameData.powLvls[i];
-                moneyNeededTxts[i].text = "G: " + GameManager.instance.GetCost(i);
+                nowPowerLevelTxts[i].text = " " + GameManager.instance.gameData.powLvls[i];
+                moneyNeededTxts[i].text = " " + GameManager.instance.GetCost(i);
             }
         }
 
@@ -56,17 +60,17 @@ public class UpgradeManager : MonoBehaviour
         if (GameManager.instance.gameData.money >= costNeeded)
         {
             GameManager.instance.Upgrade(costNeeded, whatToUpgrade);
-            holdingMoneyTxt.text = $"보유한 G:{GameManager.instance.gameData.money}";
+            holdingMoneyTxt.text = $"{GameManager.instance.gameData.money}";
             
             if (GameManager.instance.gameData.powLvls[whatToUpgrade] >= 12)
             {
-                nowPowerLevelTxts[whatToUpgrade].text = "현재 강화 수치: MAX";
+                nowPowerLevelTxts[whatToUpgrade].text = "MAX";
                 moneyNeededTxts[whatToUpgrade].text = string.Empty;
             }
             else
             {
-                nowPowerLevelTxts[whatToUpgrade].text = "현재 강화 수치: " + GameManager.instance.gameData.powLvls[whatToUpgrade];
-                moneyNeededTxts[whatToUpgrade].text = "G: " + GameManager.instance.GetCost(whatToUpgrade);
+                nowPowerLevelTxts[whatToUpgrade].text = " " + GameManager.instance.gameData.powLvls[whatToUpgrade];
+                moneyNeededTxts[whatToUpgrade].text = " " + GameManager.instance.GetCost(whatToUpgrade);
             }
             moneyLackTxt.text = "";
 
@@ -81,3 +85,4 @@ public class UpgradeManager : MonoBehaviour
 
     public void Btn_GoToTitle() => UnityEngine.SceneManagement.SceneManager.LoadScene(0);
 }
+
