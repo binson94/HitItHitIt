@@ -85,4 +85,3 @@ public class UpgradeManager : MonoBehaviour
 
     public void Btn_GoToTitle() => UnityEngine.SceneManagement.SceneManager.LoadScene(0);
 }
-
