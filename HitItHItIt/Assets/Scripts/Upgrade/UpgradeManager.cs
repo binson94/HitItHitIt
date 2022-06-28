@@ -21,7 +21,7 @@ public class UpgradeManager : MonoBehaviour
         moneyLackTxt.text = "돈이 부족합니다!";
 
         yield return new WaitForSeconds(3f);
-        moneyLackTxt.text = "";
+        moneyLackTxt.text = " ";
     }
 
 
@@ -31,7 +31,7 @@ public class UpgradeManager : MonoBehaviour
     {
         //텍스트 초기값 설정
         holdingMoneyTxt.text = $"{GameManager.instance.gameData.money}";
-        moneyLackTxt.text = "";
+        moneyLackTxt.text = " ";
 
         for (int i = 0; i < 4; i++)
         {
@@ -72,7 +72,7 @@ public class UpgradeManager : MonoBehaviour
                 nowPowerLevelTxts[whatToUpgrade].text = " " + GameManager.instance.gameData.powLvls[whatToUpgrade];
                 moneyNeededTxts[whatToUpgrade].text = " " + GameManager.instance.GetCost(whatToUpgrade);
             }
-            moneyLackTxt.text = "";
+            moneyLackTxt.text = " ";
 
             if (whatToUpgrade <= 2)
                 SoundMgr.instance.PlaySFX(SFXList.Up_Punch);
