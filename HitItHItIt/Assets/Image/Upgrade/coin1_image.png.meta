@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:HitItHItIt/Assets/Image/Upgrade/coin1_image.png.meta
 guid: b8539627406e33d41a3bc6973ef70813
+========
+guid: 4a673b3514092e2459f14653dab3d8f6
+>>>>>>>> 98eb6bcfd1a6942ebec3a6f58120a4aec1e01e82:HitItHItIt/Assets/Image/Upgrade/강화버튼.png.meta
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}

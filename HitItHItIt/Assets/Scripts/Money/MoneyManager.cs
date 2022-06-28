@@ -12,14 +12,10 @@ namespace Yeol
         List<CommandToken> tokensQueue = new List<CommandToken>();
         ///<summary> 현재 state 표시, Start -> Attack -> Dodge -> Attack ... </summary>
         UserState userState = UserState.Load;
-        ///<summary> Attack, Dodge State Timer </summary>
-        Coroutine timer = null;
 
         #region ShowUI
         [Header("UI")]
         [SerializeField] Text startTxt;
-        ///<summary> state 남은 시간 표시 텍스트 </summary>
-        [SerializeField] Text timerTxt;
         ///<summary> 0 ~ 3 Left, 4 ~ 7 Right, Jap, Hook, Upper, Ducking 순 </summary>
         [Tooltip("0 ~ 3 Left, 4 ~ 7 Right, Jap, Hook, Upper, Ducking 순")]
         [SerializeField] Sprite[] tokenSprites;
@@ -46,9 +42,6 @@ namespace Yeol
 
         ///<summary> 0 ~ 2 Left, 4 ~ 6 Right, Jap, Hook, Upper 순 각 피해, 3번은 결번 </summary>
         int[] dmgs = new int[7] { 1, 1, 1, 0, 1, 1, 1 };
-
-        ///<summary> attack State 지속 시간, 만료 시 dodge State로 넘어감 </summary>
-        int attackStateTime = 10;
         #endregion CharacterStatus
 
         #region Animation
@@ -68,11 +61,9 @@ namespace Yeol
 
             staminaSlider.SetMax(stamina);
 
-            SoundMgr.instance.PlayBGM(BGMList.Win);
+            SoundMgr.instance.PlayBGM(BGMList.Money);
             StartCoroutine(WaitBeforeStart());
         }
-
-
 
         IEnumerator WaitBeforeStart()
         {
@@ -89,9 +80,6 @@ namespace Yeol
             startTxt.gameObject.SetActive(false);
             StartAttack();
         }
-        
-        
-
         
         ///<summary> 디버그 용, 키보드 입력과 버튼 대응 </summary>
         private void Update()
@@ -122,24 +110,7 @@ namespace Yeol
             foreach (Image i in attackTokenImages)
                 i.gameObject.SetActive(true);
             ImageUpdate();
-
-            timer = StartCoroutine(AttackTimer(attackStateTime));
         }
-        IEnumerator AttackTimer(float timer)
-        {
-            while (timer > 0)
-            {
-                timerTxt.text = string.Format("{0:N1}", timer);
-                yield return new WaitForSeconds(0.1f);
-                timer -= 0.1f;
-            }
-
-            userState = UserState.Win;
-            End();
-
-            yield return null;
-        }
-
 
         ///<summary> 좌우 커맨드 버튼 8개에 대응하는 함수 </summary>
         ///<param name="btnIdx"> 0 ~ 3 Left, 4 ~ 7 Right : 잽, 훅, 어퍼, 더킹 순서, 버튼에 이미 할당되어 있음 </param>
@@ -153,10 +124,9 @@ namespace Yeol
             //입력 성공
             if (inputToken == tokensQueue[0])
             {
-                if (inputToken < CommandToken.LDucking)
-                    playerAnimator.Play("Hand LeftAtk");
-                else
-                    playerAnimator.Play("Hand RightAtk");
+                PlayAnimation();
+
+                SoundMgr.instance.PlaySFX(SFXList.Punch);
 
                 //피해 정도에 따라 돈 획득
                 accumulatedDmg += dmgs[(int)inputToken];
@@ -172,7 +142,6 @@ namespace Yeol
                 if (currStamina <= 0)
                 {
                     userState = UserState.Win;
-                    StopCoroutine(timer);
                     End();
                 }
 
@@ -181,8 +150,32 @@ namespace Yeol
             else
             {
                 userState = UserState.Win;
-                StopCoroutine(timer);
                 End();
+            }
+
+            void PlayAnimation()
+            {
+                switch (inputToken)
+                {
+                    case CommandToken.LJap:
+                        playerAnimator.Play("player_LJ");
+                        break;
+                    case CommandToken.LHook:
+                        playerAnimator.Play("player_LH");
+                        break;
+                    case CommandToken.LUpper:
+                        playerAnimator.Play("player_LU");
+                        break;
+                    case CommandToken.RJap:
+                        playerAnimator.Play("player_RJ");
+                        break;
+                    case CommandToken.RHook:
+                        playerAnimator.Play("player_RH");
+                        break;
+                    case CommandToken.RUpper:
+                        playerAnimator.Play("player_RU");
+                        break;
+                }
             }
         }
        

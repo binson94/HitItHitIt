@@ -36,9 +36,9 @@ public class GameManager : MonoBehaviour
     ///<summary> Json Data Load </summary>
     // https://litjson.net/ - json 데이터 유니티 오브젝트로 바꿔주는 플러그인
     // https://www.convertcsv.com/csv-to-json.htm - 엑셀 파일 json string으로 바꿔주는 플러그인
-    void LoadData()
+    public void LoadData()
     {
-        _gamedata.money = PlayerPrefs.GetInt("Money", 500);
+        _gamedata.money = PlayerPrefs.GetInt("Money", 0);
         for(int i = 0;i < 4;i++) _gamedata.powLvls[i] = PlayerPrefs.GetInt($"PowLvl{i}", 1);
         _gamedata.stage = PlayerPrefs.GetInt("Stage", 1);
 
