@@ -47,6 +47,11 @@ namespace Yeol
         #region Animation
         [Header("Animation")]
         [SerializeField] Animator playerAnimator;
+
+        [SerializeField] Animator resourceAnimator;
+        [SerializeField] Image resourceImage;
+        [SerializeField] Sprite[] resourceSprites;
+        int enemyIdx;
         #endregion
 
         private void Start()
@@ -54,6 +59,8 @@ namespace Yeol
             foreach (Image i in attackTokenImages)
                 i.gameObject.SetActive(false);
 
+            enemyIdx = Random.Range(0, 3);
+            resourceImage.sprite = resourceSprites[enemyIdx * 4];
 
             for(int i = 0;i < 3; i++)
                 dmgs[i] = dmgs[i + 4] = GameManager.instance.GetStat(i);
@@ -125,18 +132,26 @@ namespace Yeol
             if (inputToken == tokensQueue[0])
             {
                 PlayAnimation();
+                resourceAnimator.Play("Resource_Hit");
 
                 SoundMgr.instance.PlaySFX(SFXList.Punch);
 
                 //피해 정도에 따라 돈 획득
                 accumulatedDmg += dmgs[(int)inputToken];
-                currMoneyTxt.text = $"획득한 G:{accumulatedDmg / 10}";
+                currMoneyTxt.text = $"{accumulatedDmg / 10}";
 
                 tokensQueue.RemoveAt(0);
                 tokensQueue.Add(GetAttackToken());
                 ImageUpdate();
 
                 staminaSlider.SetValue(--currStamina);
+
+                if(currStamina < stamina / 4f)
+                    resourceImage.sprite = resourceSprites[enemyIdx * 4 + 3];
+                else if(currStamina < stamina / 2f)
+                    resourceImage.sprite  = resourceSprites[enemyIdx * 4 + 2];
+                else if(currStamina < stamina * 3f / 4)
+                    resourceImage.sprite = resourceSprites[enemyIdx * 4 + 1];
 
                 //스테미나 모두 소진 시, 타이머 만료와 같은 동작
                 if (currStamina <= 0)

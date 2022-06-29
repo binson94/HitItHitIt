@@ -86,7 +86,8 @@ namespace Yeol
         [Header("Animation")]
         [SerializeField] Animator playerAnimator;
         [SerializeField] Animator[] enemyAnimators;
-
+        [SerializeField] Animator bgAnimator;
+        [SerializeField] GameObject winImage;
         [SerializeField] Animator endAnimator;
         #endregion
 
@@ -295,6 +296,7 @@ namespace Yeol
                 if (inputToken == tokensQueue[0])
                 {
                     PlayAnimation();
+                    enemyAnimators[GameManager.instance.gameData.enemy].Play("Enemy_Hit");
 
                     //피해 누적 및 제일 앞 Token 제거
                     enemyHp -= dmgs[(int)inputToken];
@@ -375,6 +377,8 @@ namespace Yeol
                     ImageUpdate();
                     time = dodgeStateTime;
 
+                    playerAnimator.Play(inputToken == CommandToken.LDucking ? "Player_LD" : "Player_RD");
+
                     //모든 토큰 입력 완료 -> 회피 성공 애니메이션 재생, Attack State로 전환
                     if(tokensQueue.Count <= 0)
                     {
@@ -429,6 +433,7 @@ namespace Yeol
             playerAnimator.gameObject.SetActive(false);
             endAnimator.gameObject.SetActive(true);
             endAnimator.Play("Player_Win");
+            winImage.SetActive(true);
             
             SoundMgr.instance.PlaySFX(SFXList.Announce_Win);
 
@@ -436,7 +441,7 @@ namespace Yeol
         }
         IEnumerator WinDelay()
         {
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(2f);
 
             SoundMgr.instance.PlayBGM(BGMList.Win);
             winPanel.SetActive(true);
@@ -453,6 +458,7 @@ namespace Yeol
                 i.gameObject.SetActive(false);
  
             playerAnimator.gameObject.SetActive(false);
+            bgAnimator.Play("BG_Lose");
             enemyAnimators[GameManager.instance.gameData.enemy].gameObject.SetActive(false);
 
             endAnimator.gameObject.SetActive(true);
@@ -464,7 +470,7 @@ namespace Yeol
         }
         IEnumerator LoseDelay()
         {
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(2f);
 
             losePanel.SetActive(true);
             SoundMgr.instance.PlayBGM(BGMList.Lose);
