@@ -5,12 +5,12 @@ using UnityEngine.Audio;
 
 public enum BGMList
 {
-    Title, Money, Win, Lose
+    Title, Money, Win, Lose, Battle
 }
 
 public enum SFXList
 {
-    Announce_Play, Announce_Win, Announce_Lose, Earn, Bell, Crowd, Hit, Punch, Up_Punch, Up_Stamina
+    Announce_Play, Announce_Win, Announce_Lose, Earn, Bell, Crowd, Hit, Punch, Up_Punch, Up_Stamina, Punch1, Punch2, Punch3
 }
 
 public class SoundMgr : MonoBehaviour
@@ -77,12 +77,12 @@ public class SoundMgr : MonoBehaviour
     //Resources.Load - https://learnandcreate.tistory.com/753 (Resources 내 경로 제공 시 파일 불러오기 가능)
     static void LoadClips()
     {
-        bgmClips = new AudioClip[4];
-        for(int i = 0;i < 4;i++)
+        bgmClips = new AudioClip[5];
+        for(int i = 0;i < 5;i++)
             bgmClips[i] = Resources.Load<AudioClip>($"Sounds/BGM/BGM{i}");
 
-        sfxClips = new AudioClip[10];
-        for(int i = 0;i < 10;i++)
+        sfxClips = new AudioClip[13];
+        for(int i = 0;i < 13;i++)
             sfxClips[i] = Resources.Load<AudioClip>($"Sounds/SFX/SFX{i}");
     }
 
@@ -107,16 +107,12 @@ public class SoundMgr : MonoBehaviour
         }
     }
 
-    ///<summary> BGM 정지 함수 </summary>
-    public void StopBGM()
-    {
-        bgmSource.Stop();
-    }
-
     ///<summary> SFX 재생 함수 </summary>
     public void PlaySFX(SFXList idx)
     {
-        Debug.Log($"play SFX {idx}");
-        sfxSource.PlayOneShot(sfxClips[(int)idx]);
+        if(idx >= SFXList.Punch1)
+            sfxSource.PlayOneShot(sfxClips[Random.Range(10, 13)]);
+        else
+            sfxSource.PlayOneShot(sfxClips[(int)idx]);
     }
 }

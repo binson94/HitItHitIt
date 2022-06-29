@@ -110,7 +110,7 @@ namespace Yeol
             staminaSlider.SetMax(stamina);
 
             bgmSlider.value = PlayerPrefs.GetFloat("BGM", 1);
-            SoundMgr.instance.StopBGM();
+            SoundMgr.instance.PlayBGM(BGMList.Battle);
             SoundMgr.instance.PlaySFX(SFXList.Bell);
             StartCoroutine(WaitBeforeStart());
         }
@@ -239,6 +239,7 @@ namespace Yeol
                 time -= 0.1f;
             }
 
+            SoundMgr.instance.PlaySFX(SFXList.Punch1);
             DodgeTimerExpired();
             yield return null;
         }
@@ -368,6 +369,7 @@ namespace Yeol
                     enemyAnimators[GameManager.instance.gameData.enemy].Play("Enemy_RA");
                 else
                     enemyAnimators[GameManager.instance.gameData.enemy].Play("Enemy_LA");
+                SoundMgr.instance.PlaySFX(SFXList.Punch1);
 
                 //입력 성공
                 if (inputToken == tokensQueue[0])
