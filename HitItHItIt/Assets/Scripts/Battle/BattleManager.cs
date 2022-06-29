@@ -85,10 +85,15 @@ namespace Yeol
         #region Animation
         [Header("Animation")]
         [SerializeField] Animator playerAnimator;
-        [SerializeField] Animator enemyAnimator;
+        [SerializeField] Animator[] enemyAnimators;
+
+        [SerializeField] Animator endAnimator;
         #endregion
 
         private void Start() {
+            for(int i =0;i<3;i++)
+                enemyAnimators[i].gameObject.SetActive(i == GameManager.instance.gameData.enemy);
+
             foreach(Image i in attackTokenImages)
                 i.gameObject.SetActive(false);
             foreach (Image i in dodgeTokenImages)
@@ -255,9 +260,12 @@ namespace Yeol
                 SoundMgr.instance.PlaySFX(SFXList.Hit);
                 playerhpImages[--hp].SetActive(false);
                 lose = hp <= 0;
+
+                if(lose)
+                    playerAnimator.gameObject.SetActive(false);
             }
 
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(0.5f);
 
             if (lose)
             {
@@ -307,7 +315,7 @@ namespace Yeol
                     {
                         userState = UserState.Win;
                         StopCoroutine(timer);
-                        Win();
+                        StartCoroutine(AttackToWinDelay());
                     }
                     //스테미나 모두 소진 시, 타이머 만료와 같은 동작
                     else if(currStamina <= 0)
@@ -355,9 +363,9 @@ namespace Yeol
             void OnBtnDodgeState(CommandToken inputToken)
             {
                 if(tokensQueue[0] == CommandToken.LDucking)
-                    enemyAnimator.Play("Enemy LeftAtk");
+                    enemyAnimators[GameManager.instance.gameData.enemy].Play("Enemy_RA");
                 else
-                    enemyAnimator.Play("Enemy RightAtk");
+                    enemyAnimators[GameManager.instance.gameData.enemy].Play("Enemy_LA");
 
                 //입력 성공
                 if (inputToken == tokensQueue[0])
@@ -404,31 +412,63 @@ namespace Yeol
 
         }
 
-        void Win()
+        IEnumerator AttackToWinDelay()
         {
             foreach(Image i in attackTokenImages)
                 i.gameObject.SetActive(false);
             foreach (Image i in dodgeTokenImages)
                 i.gameObject.SetActive(false);
-                
+            enemyAnimators[GameManager.instance.gameData.enemy].gameObject.SetActive(false);
+
+            yield return new WaitForSeconds(0.5f);
+
+            Win();
+        }
+        void Win()
+        {
+            playerAnimator.gameObject.SetActive(false);
+            endAnimator.gameObject.SetActive(true);
+            endAnimator.Play("Player_Win");
+            
+            SoundMgr.instance.PlaySFX(SFXList.Announce_Win);
+
+            StartCoroutine(WinDelay());
+        }
+        IEnumerator WinDelay()
+        {
+            yield return new WaitForSeconds(1f);
+
+            SoundMgr.instance.PlayBGM(BGMList.Win);
             winPanel.SetActive(true);
             earnMoneyTxt.text = $"{GameManager.instance.gameData.stage * 100} 골드 획득";
             GameManager.instance.EarnMoney(GameManager.instance.gameData.stage * 100);
             GameManager.instance.IncreaseStage();
-            
-            SoundMgr.instance.PlaySFX(SFXList.Announce_Win);
-            SoundMgr.instance.PlayBGM(BGMList.Win);
         }
+        
         void Lose()
         {
             foreach(Image i in attackTokenImages)
                 i.gameObject.SetActive(false);
             foreach (Image i in dodgeTokenImages)
                 i.gameObject.SetActive(false);
+ 
+            playerAnimator.gameObject.SetActive(false);
+            enemyAnimators[GameManager.instance.gameData.enemy].gameObject.SetActive(false);
+
+            endAnimator.gameObject.SetActive(true);
+            endAnimator.Play("Player_Lose");
+
+            SoundMgr.instance.PlaySFX(SFXList.Announce_Lose);
+
+            StartCoroutine(LoseDelay());
+        }
+        IEnumerator LoseDelay()
+        {
+            yield return new WaitForSeconds(1f);
 
             losePanel.SetActive(true);
-            SoundMgr.instance.PlaySFX(SFXList.Announce_Lose);
             SoundMgr.instance.PlayBGM(BGMList.Lose);
+
         }
 
         ///<summary> 일시 정지, 재시작 버튼 </summary>

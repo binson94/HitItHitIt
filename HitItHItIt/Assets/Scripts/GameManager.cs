@@ -41,6 +41,7 @@ public class GameManager : MonoBehaviour
         _gamedata.money = PlayerPrefs.GetInt("Money", 0);
         for(int i = 0;i < 4;i++) _gamedata.powLvls[i] = PlayerPrefs.GetInt($"PowLvl{i}", 1);
         _gamedata.stage = PlayerPrefs.GetInt("Stage", 1);
+        _gamedata.enemy = PlayerPrefs.GetInt("Enemy", 0);
 
         JsonData json = JsonMapper.ToObject(Resources.Load<TextAsset>("Stat").text);
 
@@ -70,6 +71,8 @@ public class GameManager : MonoBehaviour
     {
         _gamedata.stage = Mathf.Min(_gamedata.stage + 1, 12);
         PlayerPrefs.SetInt("Stage", _gamedata.stage);
+        _gamedata.enemy = (_gamedata.enemy + 1) % 3;
+        PlayerPrefs.SetInt("Enemy", _gamedata.enemy);
     }
     ///<summary> 전투 승리, 돈벌기 씬에서 호출, 돈 획득 후 데이터 저장 </summary>
     public void EarnMoney(int amount)
@@ -90,6 +93,7 @@ public class GameData
     ///<summary> 0 jap, 1 hook, 2 upper, 3 stamina </summary>
     public int[] powLvls = new int[4];
     public int stage;
+    public int enemy;
 
     ///<summary> 0 jap, 1 hook, 2 upper, 3 stamina </summary>
     public int[,] stats = new int[4, 13];
