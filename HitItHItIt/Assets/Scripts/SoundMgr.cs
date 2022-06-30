@@ -10,7 +10,7 @@ public enum BGMList
 
 public enum SFXList
 {
-    Announce_Play, Announce_Win, Announce_Lose, Earn, Bell, Crowd, Hit, Punch, Up_Punch, Up_Stamina, Punch1, Punch2, Punch3
+    Announce_Play, Announce_Win, Announce_Lose, Bell, Crowd, Hit, Punch1, Punch2, Punch3, Up_Punch, Up_Stamina, Earn_Steel, Earn_Stone, Earn_Wood
 }
 
 public class SoundMgr : MonoBehaviour
@@ -81,8 +81,8 @@ public class SoundMgr : MonoBehaviour
         for(int i = 0;i < 5;i++)
             bgmClips[i] = Resources.Load<AudioClip>($"Sounds/BGM/BGM{i}");
 
-        sfxClips = new AudioClip[13];
-        for(int i = 0;i < 13;i++)
+        sfxClips = new AudioClip[14];
+        for(int i = 0;i < 14;i++)
             sfxClips[i] = Resources.Load<AudioClip>($"Sounds/SFX/SFX{i}");
     }
 
@@ -110,8 +110,8 @@ public class SoundMgr : MonoBehaviour
     ///<summary> SFX 재생 함수 </summary>
     public void PlaySFX(SFXList idx)
     {
-        if(idx >= SFXList.Punch1)
-            sfxSource.PlayOneShot(sfxClips[Random.Range(10, 13)]);
+        if(idx == SFXList.Punch1)
+            sfxSource.PlayOneShot(sfxClips[Random.Range(6, 9)]);
         else
             sfxSource.PlayOneShot(sfxClips[(int)idx]);
     }

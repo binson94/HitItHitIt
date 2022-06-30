@@ -134,7 +134,7 @@ namespace Yeol
                 PlayAnimation();
                 resourceAnimator.Play("Resource_Hit");
 
-                SoundMgr.instance.PlaySFX(SFXList.Punch);
+                SoundMgr.instance.PlaySFX(SFXList.Earn_Steel + enemyIdx);
 
                 //피해 정도에 따라 돈 획득
                 accumulatedDmg += dmgs[(int)inputToken];

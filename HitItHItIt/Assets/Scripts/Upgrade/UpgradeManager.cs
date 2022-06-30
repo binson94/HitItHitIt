@@ -12,6 +12,8 @@ public class UpgradeManager : MonoBehaviour
 
     [SerializeField] Animator[] sparkAnims;
 
+    [SerializeField] Animator playerAnimator;
+
     private void Start()
     {
         //텍스트 초기값 설정
@@ -38,7 +40,10 @@ public class UpgradeManager : MonoBehaviour
         {
             GameManager.instance.Upgrade(costNeeded, whatToUpgrade);
             if(whatToUpgrade == 3)
+            {
                 sparkAnims[2].Play("Spark3");
+                playerAnimator.Play("Player_Stamina");
+            }
             else
             {
                 sparkAnims[0].Play("Spark1");

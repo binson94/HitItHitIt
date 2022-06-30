@@ -239,6 +239,7 @@ namespace Yeol
                 time -= 0.1f;
             }
 
+            enemyAnimators[GameManager.instance.gameData.enemy].Play("Enemy_LA");
             SoundMgr.instance.PlaySFX(SFXList.Punch1);
             DodgeTimerExpired();
             yield return null;
@@ -305,7 +306,7 @@ namespace Yeol
                         enemyHp = 0;
                     enemyhpSlider.SetValue(enemyHp);
 
-                    SoundMgr.instance.PlaySFX(SFXList.Punch);
+                    SoundMgr.instance.PlaySFX(SFXList.Punch1);
                     
                     tokensQueue.RemoveAt(0);
                     tokensQueue.Add(GetAttackToken());
