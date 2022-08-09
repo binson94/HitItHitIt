@@ -14,4 +14,4 @@ Unity / 2D / 캐주얼 / 스포츠
 Unity Engine / C#
 
 ## 링크
-https://play.google.com/store/apps/details?id=com.ExPStudio.HitItHitIt
+[스토어 링크](https://play.google.com/store/apps/details?id=com.ExPStudio.HitItHitIt)
